@@ -1,8 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
+
+:root {
+  /* Fonts */
+  --font-poppins: 'Poppins', sans-serif;
+
+  /* 🎨 Colors */
+  --lavender-purple: #BE7AEF;
+  --deep-blue: #1920BA;
+  --sky-blue: #51B8E6;
+
+  --dark-sapphire: #2c4e9b;
+  --light-blue: #654cff;
+  --ruby-red: #f14666;
+  --dark-gray: #3f3f3f;
+  --dark-blue: #051d53;
+  --light-green: #38c016;
+  --pure-red: #ff0000;
+  --light-gray: #E8EBEB;
+  /* Borders & Shadows */
+  --shadow-custom: 0px 4px 24px 5px rgba(155, 183, 255, 0.15);
+  --border-light-gray: #E8EBEB;
+  --bgColor: #FFFAFB;
+}
 
 html {
   zoom: 1;
 }
+
+body {
+  font-family: var(--font-poppins);
+  background-color: var(--bgColor, #000);
+  color: var(--dark-gray);
+}
+
+
+@layer components {
+  .cta {
+    @apply h-[50px] inline-flex items-center justify-center gap-1 px-8 py-3 rounded-xl text-sm font-medium text-center;
+  }
+}
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -67,24 +106,21 @@ html {
   }
 }
 
-body {
-  min-height: 100vh;
-  /* background-color: #fffafb; */
-  color: #3f3f3f;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
+
 @keyframes shimmer {
   0% {
     transform: translateX(-100%);
   }
+
   100% {
     transform: translateX(100%);
   }
@@ -92,4 +128,52 @@ body {
 
 .animate-[shimmer_2s_infinite] {
   animation: shimmer 2s infinite linear;
+}
+
+
+.btn-blue {
+  height: 3.125rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 2rem;
+  background-image: linear-gradient(85deg,
+      #2c4e9b,
+      #2289cc,
+      #27b7e4,
+      #2289cc,
+      #2c4e9b);
+  background-size: 200%;
+  background-position: right;
+  color: #ffffff;
+  border-radius: 0.75rem;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  transition: background-position 0.5s;
+}
+
+.btn-blue:hover {
+  background-position: left;
+}
+
+.badge-purple {
+  padding: .5rem 1rem;
+  background-color: #f7f6ff;
+  border-radius: 2rem;
+  border: 1px solid #654cff;
+  color: #654cff;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  gap: .5rem;
+}
+
+.gradient-text {
+  background: linear-gradient(275deg, #ba4ddf 6.72%, #512bf7 52.28%, #50b8e6 94.19%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  line-height: 1.3;
 }

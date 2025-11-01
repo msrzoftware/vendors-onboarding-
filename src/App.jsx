@@ -1,10 +1,7 @@
-import Home from "./components/Home.jsx";
+import Home from "./Screens/Home";
+
 const App = () => {
-  return (
-    <>
-      <Home />
-    </>
-  );
+  return <Home />;
 };
 
 export default App;
