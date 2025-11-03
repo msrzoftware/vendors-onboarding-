@@ -9,6 +9,7 @@ export const SECTIONS = {
   SUPPORT: "support",
   COMPANY: "company",
   TECHNICAL: "technical",
+  REVIEWS: "reviews",
 };
 
 export const FIELD_GROUPS = {
@@ -20,6 +21,7 @@ export const FIELD_GROUPS = {
       "website",
       "company_website",
       "weburl",
+      "logo_url",
     ],
     expanded: true,
   },
@@ -33,6 +35,7 @@ export const FIELD_GROUPS = {
       "usp",
       "competitive_advantage",
       "feature_overview",
+      "videos",
     ],
     type: "longtext",
   },
@@ -49,7 +52,15 @@ export const FIELD_GROUPS = {
   },
   [SECTIONS.FEATURES]: {
     title: "Features & Capabilities",
-    fields: ["features", "other_features", "ai_capabilities"],
+    fields: [
+      "features",
+      "other_features",
+      "ai_capabilities",
+      "ai_questions",
+      "gcc_availability",
+      "web3_components",
+      "",
+    ],
   },
   [SECTIONS.PRICING]: {
     title: "Pricing & Plans",
@@ -73,6 +84,10 @@ export const FIELD_GROUPS = {
     title: "Technical Details",
     fields: ["integrations", "languages_supported", "faq"],
   },
+  // [SECTIONS.REVIEWS]: {
+  //   title: "Reviews & Ratings",
+  //   fields: ["reviews", "reviews_strengths", "reviews_weakness", "ratings"],
+  // },
 };
 
 export function prettifyKey(key) {

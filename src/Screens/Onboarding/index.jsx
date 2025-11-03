@@ -449,37 +449,44 @@ const Onboarding = ({ step, setStep }) => {
   // 🟣 Welcome Step
   if (step === 0) {
     return (
-      <div className="h-screen flex items-center justify-center px-6 py-16">
-        <div className="text-center flex flex-col items-center justify-center max-w-3xl mx-auto text-slate-800 space-y-6 opacity-0 translate-y-6 animate-[fadeIn_0.8s_ease-out_0.5s_forwards]">
-          <div className="opacity-0 translate-y-6 animate-[fadeIn_0.8s_ease-out_0.5s_forwards]">
-            <span className="px-4 py-2 rounded-full text-sm font-medium border text-(--dark-blue) border-[#e6e6e6] tracking-wide">
+      <div className="h-[calc(100dvh-64px)] flex items-center justify-center px-6">
+        <div className="text-center flex flex-col items-center justify-center gap-y-2 max-w-3xl px-8 py-16 text-slate-800 overflow-hidden rounded-xl bg-white">
+          {/* Top Label */}
+          <div className="opacity-0 animate-[fadeIn_0.8s_ease-out_0.5s_forwards]">
+            <span className="px-4 py-2 rounded-full text-sm font-medium border text-(--dark-blue) border-[#e6e6e6] tracking-wide inline-block bg-white/80 backdrop-blur-sm">
               Welcome to the Vendor Network
             </span>
           </div>
 
-          <h1 className="mb-2 text-5xl lg:text-6xl font-semibold leading-tight text-(--dark-blue) opacity-0 translate-y-6 animate-[fadeIn_0.8s_ease-out_0.7s_forwards]">
-            Empower Your Growth as Our{" "}
-            <span
-              className="bg-clip-text text-transparent"
-              style={{
-                backgroundImage:
-                  "linear-gradient(90deg, var(--deep-blue), var(--sky-blue), var(--lavender-purple))",
-              }}
-            >
-              Partner
-            </span>
-          </h1>
+          <div>
+            {/* Heading */}
+            <h1 className="text-5xl lg:text-6xl font-semibold leading-tight text-(--dark-blue) opacity-0 animate-[fadeIn_0.8s_ease-out_0.7s_forwards]">
+              Empower Your Growth as Our{" "}
+              <span
+                className="bg-clip-text text-transparent"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(90deg, var(--deep-blue), var(--sky-blue), var(--lavender-purple))",
+                }}
+              >
+                Partner
+              </span>
+            </h1>
 
-          <p className="text-lg lg:text-xl text-[#696871] font-light leading-relaxed opacity-0 translate-y-6 animate-[fadeIn_0.8s_ease-out_0.9s_forwards]">
-            Join a community of trusted vendors delivering innovative solutions.
-          </p>
+            {/* Subtitle */}
+            <p className="mt-4 text-lg lg:text-xl text-[#696871] font-light leading-relaxed opacity-0 animate-[fadeIn_0.8s_ease-out_0.9s_forwards]">
+              Join a community of trusted vendors delivering innovative
+              solutions.
+            </p>
+          </div>
 
+          {/* CTA Button */}
           <button
-            className="cta btn-blue opacity-0 translate-y-6 animate-[fadeIn_0.8s_ease-out_1.1s_forwards]"
             onClick={() => setStep(1)}
+            className="btn-blue mt-3 opacity-0 animate-[fadeIn_0.8s_ease-out_1.1s_forwards] hover:shadow-md transition-all duration-300"
           >
             <span>Start Onboarding</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
           </button>
         </div>
       </div>
@@ -490,7 +497,7 @@ const Onboarding = ({ step, setStep }) => {
   if (step === 1) {
     return (
       <div className="h-screen flex items-center justify-center px-6  rounded-t-full">
-        <div className="w-2xl max-w-fit border rounded border-gray-200/5 backdrop-blur-xl bg-white/55 py-12 px-8 sm:px-12 text-center">
+        <div className="w-2xl max-w-fit rounded backdrop-blur-xl py-12 px-8 sm:px-12 text-center">
           <h2 className="text-3xl flex items-center gap-2 text-left font-bold text-gray-900 mb-2.5 opacity-0 animate-[fadeIn_0.8s_ease-out_0.2s_forwards]">
             <Globe className="w-8 h-8 text-(--dark-sapphire)" />
             Enter Your Domain

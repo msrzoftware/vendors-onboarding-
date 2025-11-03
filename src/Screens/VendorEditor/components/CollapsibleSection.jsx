@@ -25,7 +25,7 @@ const CollapsibleSection = memo(
               : "bg-white border-b-0"
           }`}
         >
-          <span className="font-semibold text-[1.05em] text-gray-800">
+          <span className="font-semibold text-[1.05em] text-(--dark-gray)">
             {title}
           </span>
           <span

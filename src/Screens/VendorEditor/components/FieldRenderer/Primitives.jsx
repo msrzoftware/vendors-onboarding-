@@ -19,7 +19,7 @@ export default function PrimitiveRenderer({ field, value, onChange }) {
   return (
     <input
       value={value || ""}
-      className="w-full border border-(--border-light-gray) rounded-xl px-4 py-3"
+      className="w-full border border-(--border-light-gray) rounded-xl px-4 py-3 focus:border-[var(--dark-sapphire)] focus:outline-none"
       onChange={(e) => onChange(e.target.value)}
     />
   );

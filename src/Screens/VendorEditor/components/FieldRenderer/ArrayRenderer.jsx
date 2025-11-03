@@ -5,6 +5,43 @@ import { prettifyKey } from "../../utils";
 export default function ArrayRenderer({ field, value, path = [], onChange }) {
   if (!Array.isArray(value)) return null;
 
+  // Special-case: pricing plan descriptions
+  if (field === "description" && path.includes("pricing_plans")) {
+    return (
+      <div className="flex flex-col gap-3">
+        {value.map((item, idx) => (
+          <div key={idx} className="flex items-start gap-2">
+            <div className="flex-1">
+              <input
+                value={item}
+                onChange={(e) => {
+                  const newArray = [...value];
+                  newArray[idx] = e.target.value;
+                  onChange(newArray);
+                }}
+                className="w-full border border-(--border-light-gray) rounded-lg px-4 py-2 focus:border-(--dark-sapphire) focus:outline-none"
+                placeholder="Enter description item..."
+              />
+            </div>
+            <button
+              onClick={() => onChange(value.filter((_, i) => i !== idx))}
+              className="cursor-pointer mt-1"
+              title="Remove description"
+            >
+              <X className="min-w-[18px] text-(--ruby-red)" />
+            </button>
+          </div>
+        ))}
+        <button
+          onClick={() => onChange([...value, ""])}
+          className="w-full bg-[#F2F7FF] px-3 py-2 border border-dashed border-(--border-dark-gray) rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          + Add description
+        </button>
+      </div>
+    );
+  }
+
   // Special-case: support_options and deployment_options arrays
   if (field === "support_options" || field === "deployment_options") {
     return (
@@ -17,14 +54,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
               style={{ display: "flex", gap: 8, alignItems: "start" }}
             >
               <div style={{ flex: 1 }}>
-                <label
-                  style={{
-                    display: "block",
-                    fontSize: 12,
-                    color: "#666",
-                    marginBottom: 6,
-                  }}
-                >
+                <label className="block text-[12px] text-(--dark-gray) mb-1.5">
                   Type
                 </label>
                 <input
@@ -34,7 +64,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
                     newArray[idx] = { type: e.target.value };
                     onChange(newArray);
                   }}
-                  className="w-full border border-(--border-light-gray) rounded-lg px-4 py-3"
+                  className="w-full border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none rounded-lg px-4 py-3"
                   placeholder="Enter type..."
                 />
               </div>
@@ -50,7 +80,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
         })}
         <button
           onClick={() => onChange([...value, { type: "" }])}
-          className="w-fit px-3 py-2 border border-dashed border-(--border-light-gray) rounded-lg hover:bg-gray-50 transition-colors"
+          className="w-full bg-[#F2F7FF] px-3 py-2 border border-dashed border-(--border-dark-gray) rounded-lg transition-colors"
         >
           + Add {field.replace(/_/g, " ")}
         </button>
@@ -75,32 +105,11 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
           {value.map((item, idx) => (
             <div
               key={idx}
-              style={{
-                display: "flex",
-                gap: 12,
-                alignItems: "flex-start",
-                padding: 12,
-                borderRadius: 8,
-                border: "1px solid #e6eef8",
-              }}
+              className="flex gap-3 items-start p-3 rounded-lg border border-(--border-light-gray)"
             >
-              <div
-                style={{
-                  flex: 1,
-                  display: "grid",
-                  gridTemplateColumns: "1fr",
-                  gap: 8,
-                }}
-              >
+              <div className="flex-1 grid grid-cols-1 gap-2">
                 <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: 12,
-                      color: "#666",
-                      marginBottom: 6,
-                    }}
-                  >
+                  <label className="block text-[12px] text-(--dark-gray) mb-1.5">
                     Name
                   </label>
                   <input
@@ -113,24 +122,12 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
                       };
                       onChange(newArray);
                     }}
-                    style={{
-                      width: "100%",
-                      padding: 10,
-                      borderRadius: 6,
-                      border: "1px solid #cbd5e0",
-                    }}
+                    className="w-full p-2.5 rounded-md border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: 12,
-                      color: "#666",
-                      marginBottom: 6,
-                    }}
-                  >
+                  <label className="block text-[12px] text-(--dark-gray) mb-1.5">
                     Description
                   </label>
                   <TextArea
@@ -161,13 +158,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
         <div>
           <button
             onClick={() => onChange([...value, { name: "", description: "" }])}
-            style={{
-              padding: "8px 12px",
-              borderRadius: 6,
-              border: "1px dashed #cbd5e0",
-              background: "#f7fafc",
-              cursor: "pointer",
-            }}
+            className="w-full bg-[#F2F7FF] cursor-pointer px-3 py-2 rounded-md border border-dashed border-(--dark-gray)"
           >
             + Add feature
           </button>
@@ -202,7 +193,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
                       };
                       onChange(newArray);
                     }}
-                    className="w-full p-2.5 border border-(--border-light-gray) rounded-lg mb-3"
+                    className="w-full p-2.5 border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none rounded-lg mb-3"
                   />
 
                   <label className="block text-[12px] text-gray-600 mb-1">
@@ -260,53 +251,44 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
   // generic array renderer (other_features + default)
   if (field === "other_features") {
     return (
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          gap: 8,
-        }}
-      >
-        {value.map((item, idx) => (
-          <div
-            key={idx}
-            style={{ display: "flex", gap: 8, alignItems: "center" }}
-          >
-            <input
-              value={item}
-              onChange={(e) => {
-                const newArray = [...value];
-                newArray[idx] = e.target.value;
-                onChange(newArray);
-              }}
-              style={{
-                flex: 1,
-                padding: 8,
-                borderRadius: 4,
-                border: "1px solid #ccc",
-              }}
-            />
-            <button
-              className="cursor-pointer"
-              onClick={() => onChange(value.filter((_, i) => i !== idx))}
+      <>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: 8,
+          }}
+        >
+          {value.map((item, idx) => (
+            <div
+              key={idx}
+              style={{ display: "flex", gap: 8, alignItems: "center" }}
             >
-              <X className="min-w-[18px] text-(--ruby-red)" />
-            </button>
-          </div>
-        ))}
+              <input
+                value={item}
+                className="flex-1 p-2 rounded border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none"
+                onChange={(e) => {
+                  const newArray = [...value];
+                  newArray[idx] = e.target.value;
+                  onChange(newArray);
+                }}
+              />
+              <button
+                className="cursor-pointer"
+                onClick={() => onChange(value.filter((_, i) => i !== idx))}
+              >
+                <X className="min-w-[18px] text-(--ruby-red)" />
+              </button>
+            </div>
+          ))}
+        </div>
         <button
           onClick={() => onChange([...value, ""])}
-          style={{
-            padding: 8,
-            background: "#f8f9fa",
-            border: "1px dashed #ccc",
-            borderRadius: 4,
-            cursor: "pointer",
-          }}
+          className="w-full bg-[#F2F7FF] p-2 border border-dashed border-(--dark-gray) rounded cursor-pointer mt-4"
         >
           + Add other feature
         </button>
-      </div>
+      </>
     );
   }
 
@@ -323,25 +305,13 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
                 newArray[idx] = e.target.value;
                 onChange(newArray);
               }}
-              style={{
-                flex: 1,
-                padding: 8,
-                borderRadius: 4,
-                border: "1px solid #ccc",
-              }}
+              className="flex-1 p-2 rounded-md border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none"
             />
           ) : (
             <div style={{ flex: 1 }}>
               {Object.entries(item).map(([k, v]) => (
                 <div key={k} style={{ marginBottom: 8 }}>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: 12,
-                      color: "#666",
-                      marginBottom: 4,
-                    }}
-                  >
+                  <label className="block text-[12px] text-(--dark-gray) mb-1">
                     {prettifyKey(k)}
                   </label>
                   <input
@@ -351,12 +321,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
                       newArray[idx] = { ...newArray[idx], [k]: e.target.value };
                       onChange(newArray);
                     }}
-                    style={{
-                      width: "100%",
-                      padding: 8,
-                      borderRadius: 4,
-                      border: "1px solid #ccc",
-                    }}
+                    className="w-full p-2 rounded border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none"
                   />
                 </div>
               ))}
@@ -375,14 +340,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
         onClick={() =>
           onChange([...value, typeof value[0] === "string" ? "" : {}])
         }
-        style={{
-          padding: "8px",
-          background: "#f8f9fa",
-          border: "1px dashed #ccc",
-          borderRadius: 4,
-          cursor: "pointer",
-          marginTop: 8,
-        }}
+        className="bg-[#F2F7FF] border border-dashed border-(--dark-gray) rounded cursor-pointer mt-2 p-2"
       >
         + Add {field ? field.replace(/_/g, " ") : "item"}
       </button>
