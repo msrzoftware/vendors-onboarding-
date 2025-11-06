@@ -113,7 +113,7 @@ export default function ObjectRenderer({ field, value, path = [], onChange }) {
           ) : (
             <button
               onClick={() => setShowAddDialog(true)}
-              className="w-full p-2 rounded-md border border-dashed border-(--dark-gray) bg-[#F2F7FF] cursor-pointer transition-colors"
+              className="w-full p-2 rounded-md border border-(--dark-gray) bg-[#F2F7FF] cursor-pointer transition-colors"
             >
               + Add field
             </button>

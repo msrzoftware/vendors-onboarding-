@@ -34,7 +34,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
         ))}
         <button
           onClick={() => onChange([...value, ""])}
-          className="w-full bg-[#F2F7FF] px-3 py-2 border border-dashed border-(--border-dark-gray) rounded-lg hover:bg-gray-50 transition-colors"
+          className="w-full bg-[#F2F7FF] px-3 py-2 border border-(--dark-gray) rounded-lg hover:bg-gray-50 transition-colors"
         >
           + Add description
         </button>
@@ -80,7 +80,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
         })}
         <button
           onClick={() => onChange([...value, { type: "" }])}
-          className="w-full bg-[#F2F7FF] px-3 py-2 border border-dashed border-(--border-dark-gray) rounded-lg transition-colors"
+          className="w-full bg-[#F2F7FF] px-3 py-2 border border-(--border-dark-gray) rounded-lg transition-colors"
         >
           + Add {field.replace(/_/g, " ")}
         </button>
@@ -158,7 +158,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
         <div>
           <button
             onClick={() => onChange([...value, { name: "", description: "" }])}
-            className="w-full bg-[#F2F7FF] cursor-pointer px-3 py-2 rounded-md border border-dashed border-(--dark-gray)"
+            className="w-full bg-[#F2F7FF] cursor-pointer px-3 py-2 rounded-md border border-(--dark-gray)"
           >
             + Add feature
           </button>
@@ -240,7 +240,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
           onClick={() =>
             onChange([...value, { name: null, website: null, logo: null }])
           }
-          className="w-fit px-3 py-2 border border-dashed border-(--border-light-gray) rounded-lg hover:bg-gray-50 transition-colors"
+          className="w-fit px-3 py-2 border border-(--border-light-gray) rounded-lg hover:bg-gray-50 transition-colors"
         >
           + Add Integration
         </button>
@@ -284,7 +284,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
         </div>
         <button
           onClick={() => onChange([...value, ""])}
-          className="w-full bg-[#F2F7FF] p-2 border border-dashed border-(--dark-gray) rounded cursor-pointer mt-4"
+          className="w-full bg-[#F2F7FF] p-2 border border-(--dark-gray) rounded cursor-pointer mt-4"
         >
           + Add other feature
         </button>
@@ -340,7 +340,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
         onClick={() =>
           onChange([...value, typeof value[0] === "string" ? "" : {}])
         }
-        className="bg-[#F2F7FF] border border-dashed border-(--dark-gray) rounded cursor-pointer mt-2 p-2"
+        className="bg-[#F2F7FF] border border-(--dark-gray) rounded cursor-pointer mt-2 p-2"
       >
         + Add {field ? field.replace(/_/g, " ") : "item"}
       </button>

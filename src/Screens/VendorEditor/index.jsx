@@ -77,17 +77,20 @@ const VendorEditor = ({ setStep }) => {
     };
 
     if (!vendors || vendors.length === 0) return 0;
-    
+
     // Only count fields that are actually defined in FIELD_GROUPS
     const allFields = new Set(
-      Object.values(FIELD_GROUPS).flatMap(group => group.fields)
+      Object.values(FIELD_GROUPS).flatMap((group) => group.fields)
     );
 
     return vendors.reduce((sum, vendor) => {
       let vendorCount = 0;
       for (const field of allFields) {
         if (Object.prototype.hasOwnProperty.call(vendor, field)) {
-          vendorCount += count(vendor[field], ["description", "features", "pricing_plans"].includes(field));
+          vendorCount += count(
+            vendor[field],
+            ["description", "features", "pricing_plans"].includes(field)
+          );
         }
       }
       return sum + vendorCount;
@@ -232,17 +235,18 @@ const VendorEditor = ({ setStep }) => {
         });
       }
 
-      // optional: highlight the exact target if available, otherwise the first input inside the section
-      const fieldEl =
+      // Find and highlight the field container and its input
+      const fieldContainerEl =
         Array.isArray(path) && path.length > 0
           ? document.querySelector(`[data-field-id="${path.join("|")}"]`) ||
             el.querySelector("[data-field-id]")
           : el.querySelector("[data-field-id]") ||
-            el.querySelector("input, textarea, select");
-      if (fieldEl) {
-        fieldEl.classList.add("highlight-empty-field");
+            el.querySelector("input, textarea, select").closest(".flex.flex-col");
+            
+      if (fieldContainerEl) {
+        fieldContainerEl.classList.add("highlight-empty-field");
         setTimeout(
-          () => fieldEl.classList.remove("highlight-empty-field"),
+          () => fieldContainerEl.classList.remove("highlight-empty-field"),
           2000
         );
       }
@@ -376,7 +380,15 @@ const VendorEditor = ({ setStep }) => {
 
   return (
     <div className="min-h-screen backdrop-blur-sm overflow-auto mt-6 pb-10">
-      <style>{`\n        @keyframes highlightField {\n          0%, 100% { box-shadow: 0 0 0 2px transparent; }\n          50% { box-shadow: 0 0 0 2px rgba(248, 113, 113, 1); }\n        }\n        .highlight-empty-field {\n          animation: highlightField 2s ease-in-out;\n          background-color: rgba(248, 113, 113, 0.06);\n          border-radius: 6px;\n        }\n      `}</style>
+      <style>{`\n        @keyframes highlightField {\n          0%, 100% { 
+            box-shadow: 0 0 0 2px transparent;
+            background-color: transparent;
+          }\n          50% { 
+            box-shadow: 0 0 0 2px rgba(248, 113, 113, 1);
+            background-color: rgba(248, 113, 113, 0.06);
+          }\n        }\n        .highlight-empty-field input,
+        .highlight-empty-field textarea,
+        .highlight-empty-field select {\n          animation: highlightField 2s ease-in-out;\n          border-radius: 6px;\n        }\n      `}</style>
       {/* Header Section */}
       <div className="text-[var-(--dark-gray)] sticky top-0 left-0 z-50 bg-white/95 backdrop-blur-sm py-3">
         {/* Animated Message */}
@@ -598,99 +610,123 @@ const VendorEditor = ({ setStep }) => {
                                         onClick={() => {
                                           // Initialize reviews object if it doesn't exist
                                           if (!vendor.reviews) {
-                                            updateField(vendorIndex, ["reviews"], {
-                                              strengths: [],
-                                              weaknesses: [],
-                                              overall_rating: null,
-                                              review_sources: []
-                                            });
+                                            updateField(
+                                              vendorIndex,
+                                              ["reviews"],
+                                              {
+                                                strengths: [],
+                                                weaknesses: [],
+                                                overall_rating: null,
+                                                review_sources: [],
+                                              }
+                                            );
                                           }
-                                          const current = vendor.reviews?.strengths || [];
+                                          const current =
+                                            vendor.reviews?.strengths || [];
                                           updateField(
                                             vendorIndex,
                                             ["reviews", "strengths"],
                                             [...current, ""]
                                           );
                                         }}
-                                        className="w-full px-3 py-2 rounded border border-dashed text-sm text-gray-700"
+                                        className="w-full px-3 py-2 rounded border text-sm text-gray-700"
                                       >
                                         + Add reviews.strengths
                                       </button>
-                                      {vendor.reviews?.strengths?.map((strength, idx) => (
-                                        <div key={idx} className="flex gap-2">
-                                          <input
-                                            type="text"
-                                            value={strength}
-                                            onChange={(e) => {
-                                              const newStrengths = [...(vendor.reviews?.strengths || [])];
-                                              newStrengths[idx] = e.target.value;
-                                              updateField(
-                                                vendorIndex,
-                                                ["reviews", "strengths"],
-                                                newStrengths
-                                              );
-                                            }}
-                                            className="flex-1 px-3 py-2 border rounded"
-                                          />
-                                          <button
-                                            onClick={() => {
-                                              const newStrengths = vendor.reviews.strengths.filter((_, i) => i !== idx);
-                                              updateField(
-                                                vendorIndex,
-                                                ["reviews", "strengths"],
-                                                newStrengths
-                                              );
-                                            }}
-                                            className="p-2 text-red-500 hover:bg-red-50 rounded"
-                                          >
-                                            <X className="w-5 h-5" />
-                                          </button>
-                                        </div>
-                                      ))}
+                                      {vendor.reviews?.strengths?.map(
+                                        (strength, idx) => (
+                                          <div key={idx} className="flex gap-2">
+                                            <input
+                                              type="text"
+                                              value={strength}
+                                              onChange={(e) => {
+                                                const newStrengths = [
+                                                  ...(vendor.reviews
+                                                    ?.strengths || []),
+                                                ];
+                                                newStrengths[idx] =
+                                                  e.target.value;
+                                                updateField(
+                                                  vendorIndex,
+                                                  ["reviews", "strengths"],
+                                                  newStrengths
+                                                );
+                                              }}
+                                              className="flex-1 px-3 py-2 border rounded"
+                                            />
+                                            <button
+                                              onClick={() => {
+                                                const newStrengths =
+                                                  vendor.reviews.strengths.filter(
+                                                    (_, i) => i !== idx
+                                                  );
+                                                updateField(
+                                                  vendorIndex,
+                                                  ["reviews", "strengths"],
+                                                  newStrengths
+                                                );
+                                              }}
+                                              className="p-2 text-red-500 hover:bg-red-50 rounded"
+                                            >
+                                              <X className="w-5 h-5" />
+                                            </button>
+                                          </div>
+                                        )
+                                      )}
                                       <button
                                         onClick={() => {
-                                          const current = vendor.reviews_strengths || [];
+                                          const current =
+                                            vendor.reviews_strengths || [];
                                           updateField(
                                             vendorIndex,
                                             ["reviews_strengths"],
                                             [...current, ""]
                                           );
                                         }}
-                                        className="w-full px-3 py-2 rounded border border-dashed text-sm text-gray-700"
+                                        className="w-full px-3 py-2 rounded border text-sm text-gray-700"
                                       >
                                         + Add reviews_strengths
                                       </button>
-                                      {vendor.reviews_strengths?.map((strength, idx) => (
-                                        <div key={idx} className="flex gap-2">
-                                          <input
-                                            type="text"
-                                            value={strength}
-                                            onChange={(e) => {
-                                              const newStrengths = [...(vendor.reviews_strengths || [])];
-                                              newStrengths[idx] = e.target.value;
-                                              updateField(
-                                                vendorIndex,
-                                                ["reviews_strengths"],
-                                                newStrengths
-                                              );
-                                            }}
-                                            className="flex-1 px-3 py-2 border rounded"
-                                          />
-                                          <button
-                                            onClick={() => {
-                                              const newStrengths = vendor.reviews_strengths.filter((_, i) => i !== idx);
-                                              updateField(
-                                                vendorIndex,
-                                                ["reviews_strengths"],
-                                                newStrengths
-                                              );
-                                            }}
-                                            className="p-2 text-red-500 hover:bg-red-50 rounded"
-                                          >
-                                            <X className="w-5 h-5" />
-                                          </button>
-                                        </div>
-                                      ))}
+                                      {vendor.reviews_strengths?.map(
+                                        (strength, idx) => (
+                                          <div key={idx} className="flex gap-2">
+                                            <input
+                                              type="text"
+                                              value={strength}
+                                              onChange={(e) => {
+                                                const newStrengths = [
+                                                  ...(vendor.reviews_strengths ||
+                                                    []),
+                                                ];
+                                                newStrengths[idx] =
+                                                  e.target.value;
+                                                updateField(
+                                                  vendorIndex,
+                                                  ["reviews_strengths"],
+                                                  newStrengths
+                                                );
+                                              }}
+                                              className="flex-1 px-3 py-2 border rounded"
+                                            />
+                                            <button
+                                              onClick={() => {
+                                                const newStrengths =
+                                                  vendor.reviews_strengths.filter(
+                                                    (_, i) => i !== idx
+                                                  );
+                                                updateField(
+                                                  vendorIndex,
+                                                  ["reviews_strengths"],
+                                                  newStrengths
+                                                );
+                                              }}
+                                              className="p-2 text-red-500 hover:bg-red-50 rounded"
+                                            >
+                                              <X className="w-5 h-5" />
+                                            </button>
+                                          </div>
+                                        )
+                                      )}
                                     </div>
                                   </div>
 
@@ -704,99 +740,123 @@ const VendorEditor = ({ setStep }) => {
                                         onClick={() => {
                                           // Initialize reviews object if it doesn't exist
                                           if (!vendor.reviews) {
-                                            updateField(vendorIndex, ["reviews"], {
-                                              strengths: [],
-                                              weaknesses: [],
-                                              overall_rating: null,
-                                              review_sources: []
-                                            });
+                                            updateField(
+                                              vendorIndex,
+                                              ["reviews"],
+                                              {
+                                                strengths: [],
+                                                weaknesses: [],
+                                                overall_rating: null,
+                                                review_sources: [],
+                                              }
+                                            );
                                           }
-                                          const current = vendor.reviews?.weaknesses || [];
+                                          const current =
+                                            vendor.reviews?.weaknesses || [];
                                           updateField(
                                             vendorIndex,
                                             ["reviews", "weaknesses"],
                                             [...current, ""]
                                           );
                                         }}
-                                        className="w-full px-3 py-2 rounded border border-dashed text-sm text-gray-700"
+                                        className="w-full px-3 py-2 rounded border text-sm text-gray-700"
                                       >
                                         + Add reviews.weaknesses
                                       </button>
-                                      {vendor.reviews?.weaknesses?.map((weakness, idx) => (
-                                        <div key={idx} className="flex gap-2">
-                                          <input
-                                            type="text"
-                                            value={weakness}
-                                            onChange={(e) => {
-                                              const newWeaknesses = [...(vendor.reviews?.weaknesses || [])];
-                                              newWeaknesses[idx] = e.target.value;
-                                              updateField(
-                                                vendorIndex,
-                                                ["reviews", "weaknesses"],
-                                                newWeaknesses
-                                              );
-                                            }}
-                                            className="flex-1 px-3 py-2 border rounded"
-                                          />
-                                          <button
-                                            onClick={() => {
-                                              const newWeaknesses = vendor.reviews.weaknesses.filter((_, i) => i !== idx);
-                                              updateField(
-                                                vendorIndex,
-                                                ["reviews", "weaknesses"],
-                                                newWeaknesses
-                                              );
-                                            }}
-                                            className="p-2 text-red-500 hover:bg-red-50 rounded"
-                                          >
-                                            <X className="w-5 h-5" />
-                                          </button>
-                                        </div>
-                                      ))}
+                                      {vendor.reviews?.weaknesses?.map(
+                                        (weakness, idx) => (
+                                          <div key={idx} className="flex gap-2">
+                                            <input
+                                              type="text"
+                                              value={weakness}
+                                              onChange={(e) => {
+                                                const newWeaknesses = [
+                                                  ...(vendor.reviews
+                                                    ?.weaknesses || []),
+                                                ];
+                                                newWeaknesses[idx] =
+                                                  e.target.value;
+                                                updateField(
+                                                  vendorIndex,
+                                                  ["reviews", "weaknesses"],
+                                                  newWeaknesses
+                                                );
+                                              }}
+                                              className="flex-1 px-3 py-2 border rounded"
+                                            />
+                                            <button
+                                              onClick={() => {
+                                                const newWeaknesses =
+                                                  vendor.reviews.weaknesses.filter(
+                                                    (_, i) => i !== idx
+                                                  );
+                                                updateField(
+                                                  vendorIndex,
+                                                  ["reviews", "weaknesses"],
+                                                  newWeaknesses
+                                                );
+                                              }}
+                                              className="p-2 text-red-500 hover:bg-red-50 rounded"
+                                            >
+                                              <X className="w-5 h-5" />
+                                            </button>
+                                          </div>
+                                        )
+                                      )}
                                       <button
                                         onClick={() => {
-                                          const current = vendor.reviews_weakness || [];
+                                          const current =
+                                            vendor.reviews_weakness || [];
                                           updateField(
                                             vendorIndex,
                                             ["reviews_weakness"],
                                             [...current, ""]
                                           );
                                         }}
-                                        className="w-full px-3 py-2 rounded border border-dashed text-sm text-gray-700"
+                                        className="w-full px-3 py-2 rounded border text-sm text-gray-700"
                                       >
                                         + Add reviews_weakness
                                       </button>
-                                      {vendor.reviews_weakness?.map((weakness, idx) => (
-                                        <div key={idx} className="flex gap-2">
-                                          <input
-                                            type="text"
-                                            value={weakness}
-                                            onChange={(e) => {
-                                              const newWeaknesses = [...(vendor.reviews_weakness || [])];
-                                              newWeaknesses[idx] = e.target.value;
-                                              updateField(
-                                                vendorIndex,
-                                                ["reviews_weakness"],
-                                                newWeaknesses
-                                              );
-                                            }}
-                                            className="flex-1 px-3 py-2 border rounded"
-                                          />
-                                          <button
-                                            onClick={() => {
-                                              const newWeaknesses = vendor.reviews_weakness.filter((_, i) => i !== idx);
-                                              updateField(
-                                                vendorIndex,
-                                                ["reviews_weakness"],
-                                                newWeaknesses
-                                              );
-                                            }}
-                                            className="p-2 text-red-500 hover:bg-red-50 rounded"
-                                          >
-                                            <X className="w-5 h-5" />
-                                          </button>
-                                        </div>
-                                      ))}
+                                      {vendor.reviews_weakness?.map(
+                                        (weakness, idx) => (
+                                          <div key={idx} className="flex gap-2">
+                                            <input
+                                              type="text"
+                                              value={weakness}
+                                              onChange={(e) => {
+                                                const newWeaknesses = [
+                                                  ...(vendor.reviews_weakness ||
+                                                    []),
+                                                ];
+                                                newWeaknesses[idx] =
+                                                  e.target.value;
+                                                updateField(
+                                                  vendorIndex,
+                                                  ["reviews_weakness"],
+                                                  newWeaknesses
+                                                );
+                                              }}
+                                              className="flex-1 px-3 py-2 border rounded"
+                                            />
+                                            <button
+                                              onClick={() => {
+                                                const newWeaknesses =
+                                                  vendor.reviews_weakness.filter(
+                                                    (_, i) => i !== idx
+                                                  );
+                                                updateField(
+                                                  vendorIndex,
+                                                  ["reviews_weakness"],
+                                                  newWeaknesses
+                                                );
+                                              }}
+                                              className="p-2 text-red-500 hover:bg-red-50 rounded"
+                                            >
+                                              <X className="w-5 h-5" />
+                                            </button>
+                                          </div>
+                                        )
+                                      )}
                                     </div>
                                   </div>
                                 </div>
@@ -819,10 +879,13 @@ const VendorEditor = ({ setStep }) => {
                                           strengths: [],
                                           weaknesses: [],
                                           overall_rating: null,
-                                          review_sources: []
+                                          review_sources: [],
                                         });
                                       }
-                                      const val = e.target.value === "" ? null : Number(e.target.value);
+                                      const val =
+                                        e.target.value === ""
+                                          ? null
+                                          : Number(e.target.value);
                                       updateField(
                                         vendorIndex,
                                         ["reviews", "overall_rating"],
@@ -844,55 +907,68 @@ const VendorEditor = ({ setStep }) => {
                                       onClick={() => {
                                         // Initialize reviews object if it doesn't exist
                                         if (!vendor.reviews) {
-                                          updateField(vendorIndex, ["reviews"], {
-                                            strengths: [],
-                                            weaknesses: [],
-                                            overall_rating: null,
-                                            review_sources: []
-                                          });
+                                          updateField(
+                                            vendorIndex,
+                                            ["reviews"],
+                                            {
+                                              strengths: [],
+                                              weaknesses: [],
+                                              overall_rating: null,
+                                              review_sources: [],
+                                            }
+                                          );
                                         }
-                                        const current = vendor.reviews?.review_sources || [];
+                                        const current =
+                                          vendor.reviews?.review_sources || [];
                                         updateField(
                                           vendorIndex,
                                           ["reviews", "review_sources"],
                                           [...current, ""]
                                         );
                                       }}
-                                      className="w-full px-3 py-2 rounded border border-dashed text-sm text-gray-700"
+                                      className="w-full px-3 py-2 rounded border text-sm text-gray-700"
                                     >
                                       + Add review source
                                     </button>
-                                    {vendor.reviews?.review_sources?.map((source, idx) => (
-                                      <div key={idx} className="flex gap-2">
-                                        <input
-                                          type="text"
-                                          value={source}
-                                          onChange={(e) => {
-                                            const newSources = [...(vendor.reviews?.review_sources || [])];
-                                            newSources[idx] = e.target.value;
-                                            updateField(
-                                              vendorIndex,
-                                              ["reviews", "review_sources"],
-                                              newSources
-                                            );
-                                          }}
-                                          className="flex-1 px-3 py-2 border rounded"
-                                        />
-                                        <button
-                                          onClick={() => {
-                                            const newSources = vendor.reviews.review_sources.filter((_, i) => i !== idx);
-                                            updateField(
-                                              vendorIndex,
-                                              ["reviews", "review_sources"],
-                                              newSources
-                                            );
-                                          }}
-                                          className="p-2 text-red-500 hover:bg-red-50 rounded"
-                                        >
-                                          <X className="w-5 h-5" />
-                                        </button>
-                                      </div>
-                                    ))}
+                                    {vendor.reviews?.review_sources?.map(
+                                      (source, idx) => (
+                                        <div key={idx} className="flex gap-2">
+                                          <input
+                                            type="text"
+                                            value={source}
+                                            onChange={(e) => {
+                                              const newSources = [
+                                                ...(vendor.reviews
+                                                  ?.review_sources || []),
+                                              ];
+                                              newSources[idx] = e.target.value;
+                                              updateField(
+                                                vendorIndex,
+                                                ["reviews", "review_sources"],
+                                                newSources
+                                              );
+                                            }}
+                                            className="flex-1 px-3 py-2 border rounded"
+                                          />
+                                          <button
+                                            onClick={() => {
+                                              const newSources =
+                                                vendor.reviews.review_sources.filter(
+                                                  (_, i) => i !== idx
+                                                );
+                                              updateField(
+                                                vendorIndex,
+                                                ["reviews", "review_sources"],
+                                                newSources
+                                              );
+                                            }}
+                                            className="p-2 text-red-500 hover:bg-red-50 rounded"
+                                          >
+                                            <X className="w-5 h-5" />
+                                          </button>
+                                        </div>
+                                      )
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -1042,7 +1118,7 @@ const VendorEditor = ({ setStep }) => {
                                                 ]
                                               )
                                             }
-                                            className="w-full px-3 py-2 rounded border border-dashed text-sm text-gray-700"
+                                            className="w-full px-3 py-2 rounded border text-sm text-gray-700"
                                           >
                                             + Add plan
                                           </button>
