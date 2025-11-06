@@ -35,15 +35,8 @@ const Home = () => {
       <div className="relative w-full h-fit flex items-center justify-center opacity-0 animate-[fadeIn_0.8s_ease-out_0.3s_forwards]">
         {/* Gradient fill behind steps */}
         <div
-          className="max-w-full absolute top-0 left-0 z-0 h-24 transition-all duration-700 ease-out"
-          style={{
-            width: gradientWidth,
-            backgroundImage:
-              "linear-gradient(85deg, #2c4e9b, #2289cc, #27b7e4, #2289cc, #2c4e9b)",
-            backgroundSize: "200%",
-            backgroundPosition: "right",
-            transition: "background-position 0.5s ease-out",
-          }}
+          className={`max-w-full absolute top-0 left-0 z-0 h-16 transition-all duration-700 ease-out bg-[linear-gradient(85deg,#2c4e9b,#2289cc,#27b7e4,#2289cc,#2c4e9b)] bg-size-[200%] bg-right`}
+          style={{ width: gradientWidth }}
         />
 
         {/* Step labels with optional pulsing overlay */}
@@ -68,7 +61,7 @@ const Home = () => {
       </div>
 
       {/* Bottom Onboarding Section */}
-      <div className="flex-1 w-full z-50 bg-white rounded-t-[5%] overflow-hidden">
+      <div className="flex-1 w-full z-50 bg-white overflow-hidden">
         <Onboarding step={step} setStep={setStep} />
       </div>
     </div>

@@ -39,7 +39,7 @@ const FieldRenderer = ({ field, value, path = [], onChange }) => {
     <input
       value={String(value ?? "")}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full border border-(--border-light-gray) rounded-lg px-4 py-3"
+      className="w-full border border-(--border-light-gray) focus:border-[var(--dark-sapphire)] focus:outline-none rounded-lg px-4 py-3"
     />
   );
 };

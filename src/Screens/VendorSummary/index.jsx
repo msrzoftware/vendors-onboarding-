@@ -67,7 +67,7 @@ const SECTION_CONFIG = {
               <div className="mb-4 flex items-center flex-col gap-1">
                 {plan.amount ? (
                   <div>
-                    <span className="text-4xl font-semibold leading-tight text-(--dark-gray)">
+                    <span className="max-w-full text-4xl text-center font-semibold leading-tight text-[var(--dark-gray)] block break-all whitespace-normal overflow-hidden">
                       ${plan.amount}
                     </span>
                     <span className="text-[#3f3f3f] text-sm">
@@ -250,14 +250,14 @@ const renderDynamicSection = (key, value, overrideConfig = {}) => {
                   <h3 className="text-sm font-semibold text-[#3f3f3f] mb-2">
                     {formatTitle(subKey)}
                   </h3>
-                  <p className="text-[#051d53]">{renderValue(subValue)}</p>
+                  <div className="text-[#051d53]">{renderValue(subValue)}</div>
                 </div>
               ))}
             </div>
           );
         })()
       ) : (
-        <p className="text-[#3f3f3f] leading-relaxed">{renderValue(value)}</p>
+        <div className="text-[#3f3f3f] leading-relaxed">{renderValue(value)}</div>
       )}
     </Card>
   );
