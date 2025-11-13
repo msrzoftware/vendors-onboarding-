@@ -1,5 +1,9 @@
 import React from 'react';
 import { Box, Check, ExternalLink, Shield, Sparkles, Zap } from 'lucide-react';
+import { formatFieldName } from '../../../utils/renderUtils';
+
+// Helper function to format title
+const formatTitle = (key) => formatFieldName(key);
 
 // Base card component
 export const Card = ({ children, className = "", highlight = false }) => (
@@ -15,7 +19,7 @@ export const Card = ({ children, className = "", highlight = false }) => (
 );
 
 // Section header with optional icon
-export const SectionHeader = ({ title, icon: Icon }) => (
+export const SectionHeader = ({ title }) => (
   <div className="flex items-center gap-3 mb-4">
     {/* {Icon && (
       <div className="w-10 h-10 bg-[#51B8E6]/10 rounded-lg flex items-center justify-center shrink-0">
@@ -121,7 +125,7 @@ export const LinkCard = ({ text, url }) => (
 );
 
 // Quick stat component
-export const QuickStat = ({ icon: Icon, label, value, isEmail }) => (
+export const QuickStat = ({ label, value, isEmail }) => (
   <div className="flex items-start gap-3">
     {/* <div className="w-10 h-10 bg-[#51B8E6]/10 rounded-lg flex items-center justify-center shrink-0">
       <Icon className="w-5 h-5 text-[#51B8E6]" />
@@ -144,8 +148,8 @@ export const QuickStat = ({ icon: Icon, label, value, isEmail }) => (
   </div>
 );
 
-// Section renderer based on layout type
-export const renderSectionContent = (content, layout) => {
+// Section Content Renderer Component
+export const SectionContent = ({ content, layout }) => {
   if (!content) return null;
 
   switch (layout) {

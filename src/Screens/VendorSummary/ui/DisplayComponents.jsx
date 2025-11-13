@@ -12,7 +12,7 @@ export const Card = ({ children, className = "", gradient = false }) => (
 );
 
 // Section header with icon
-export const SectionHeader = ({ title, icon: Icon }) => (
+export const SectionHeader = ({ title }) => (
   <div className="flex items-center gap-3 mb-4">
     {/* {Icon && (
       <div className="w-10 h-10 bg-[#51B8E6]/10 rounded-lg flex items-center justify-center shrink-0">
@@ -98,7 +98,7 @@ export const LinkCard = ({ text, url }) => (
 );
 
 // Quick stat component
-export const QuickStat = ({ icon: Icon, label, value, isEmail }) => (
+export const QuickStat = ({ label, value, isEmail }) => (
   <div className="flex items-start gap-3">
     {/* <div className="w-10 h-10 bg-[#51B8E6]/10 rounded-lg flex items-center justify-center shrink-0">
       <Icon className="w-5 h-5 text-[#51B8E6]" />

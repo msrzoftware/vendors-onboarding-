@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Globe, ArrowRight, Sparkles, LucideLoader } from "lucide-react";
+import { Globe, ArrowRight, Sparkles, LucideLoader, AlertCircle, RefreshCw } from "lucide-react";
 import VendorSummary from "../VendorSummary/index.jsx";
 import VendorEditor from "../VendorEditor/index.jsx";
 import { useScraper } from "../../hooks/useScraper";
@@ -31,7 +31,7 @@ const Onboarding = ({ step, setStep }) => {
     } else {
       resumeJob();
     }
-  }, []);
+  }, [resumeJob]);
 
   useEffect(() => {
     if (result) {
@@ -49,7 +49,7 @@ const Onboarding = ({ step, setStep }) => {
   const handleDomainSubmit = (e) => {
     e.preventDefault();
     const urlPattern =
-      /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
     if (!domain) {
       setErrors({ domain: "Please enter a domain name" });
       return;
@@ -61,6 +61,12 @@ const Onboarding = ({ step, setStep }) => {
 
     const fullUrl = domain.startsWith("http") ? domain : `https://${domain}`;
     setStep(2);
+    startScraping(fullUrl);
+  };
+
+  const handleRetry = () => {
+    const fullUrl = domain.startsWith("http") ? domain : `https://${domain}`;
+    setErrors({});
     startScraping(fullUrl);
   };
 
@@ -205,8 +211,22 @@ const Onboarding = ({ step, setStep }) => {
           </div>
 
           {errors.general && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600">{errors.general}</p>
+            <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-red-800 mb-2">
+                    {errors.general}
+                  </p>
+                  <button
+                    onClick={handleRetry}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                    Try Again
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>
