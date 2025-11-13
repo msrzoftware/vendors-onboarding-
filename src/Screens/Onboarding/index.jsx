@@ -48,8 +48,9 @@ const Onboarding = ({ step, setStep }) => {
 
   const handleDomainSubmit = (e) => {
     e.preventDefault();
+    // Improved URL pattern without nested quantifiers to prevent ReDoS
     const urlPattern =
-      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]+)?\/?$/;
     if (!domain) {
       setErrors({ domain: "Please enter a domain name" });
       return;
