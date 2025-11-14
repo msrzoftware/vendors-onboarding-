@@ -181,7 +181,7 @@ const Onboarding = ({ step, setStep }) => {
             Fetching data from <span className="font-semibold">{domain}</span>
           </p>
 
-          <div className="space-y-2 max-h-64 max-w-fit overflow-hidden">
+          <div className="space-y-2 max-h-64 w-fit overflow-hidden">
             {progress.length > 0
               ? progress.map((msg, idx) => (
                   <div
@@ -189,7 +189,7 @@ const Onboarding = ({ step, setStep }) => {
                     className="flex items-center justify-center gap-2"
                   >
                     <LucideLoader className="w-5 h-5 text-(--dark-blue)/55 animate-spin" />
-                    <span className="text-sm text-(--dark-gray)/70">{msg}</span>
+                    <span className="text-sm text-(--dark-gray)/70 text-nowrap">{msg}</span>
                   </div>
                 ))
               : ["Connecting to server...", "Starting analysis..."].map(
