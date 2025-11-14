@@ -30,7 +30,7 @@ const Home = () => {
       : "100%";
 
   return (
-    <div className="flex flex-col h-screen bg-(--bgColor)">
+    <div className="flex flex-col h-screen">
       {/* Top Step Indicator */}
       <div className="relative w-full h-fit flex items-center justify-center opacity-0 animate-[fadeIn_0.8s_ease-out_0.3s_forwards]">
         {/* Gradient fill behind steps */}
@@ -50,7 +50,7 @@ const Home = () => {
             return (
               <div
                 key={idx}
-                className={`flex-1 h-16 flex items-center justify-center text-lg font-light transition-colors duration-500
+                className={`flex-1 h-10 flex items-center justify-center text-lg font-light transition-colors duration-500
                   ${isFilled ? "text-white" : "text-black"}`}
               >
                 {label}

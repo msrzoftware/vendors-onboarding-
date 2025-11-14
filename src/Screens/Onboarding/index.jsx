@@ -17,6 +17,8 @@ const Onboarding = ({ step, setStep }) => {
     resumeJob,
   } = useScraper();
 
+  console.log("progress", progress);
+
   useEffect(() => {
     const storedData = localStorage.getItem("__onboarding-Vendors-SDN");
     if (storedData) {
@@ -24,6 +26,7 @@ const Onboarding = ({ step, setStep }) => {
         const parsed = JSON.parse(storedData);
         if (parsed.success && parsed.data) {
           setCompanyData(parsed.data);
+          setStep(3);
         }
       } catch (err) {
         console.error("Failed to parse stored data:", err);
@@ -31,7 +34,7 @@ const Onboarding = ({ step, setStep }) => {
     } else {
       resumeJob();
     }
-  }, []);
+  }, [resumeJob, setStep]);
 
   useEffect(() => {
     if (result) {
@@ -49,7 +52,7 @@ const Onboarding = ({ step, setStep }) => {
   const handleDomainSubmit = (e) => {
     e.preventDefault();
     const urlPattern =
-      /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\w/ .-]*)*\/?$/;
     if (!domain) {
       setErrors({ domain: "Please enter a domain name" });
       return;
@@ -78,7 +81,7 @@ const Onboarding = ({ step, setStep }) => {
 
           <div>
             {/* Heading */}
-            <h1 className="text-5xl lg:text-6xl font-semibold leading-tight text-(--dark-blue) opacity-0 animate-[fadeIn_0.8s_ease-out_0.7s_forwards]">
+            <h1 className="text-3xl lg:text-5xl font-semibold leading-tight text-(--dark-blue)/85 opacity-0 animate-[fadeIn_0.8s_ease-out_0.7s_forwards]">
               Empower Your Growth as Our{" "}
               <span
                 className="bg-clip-text text-transparent"
@@ -92,7 +95,7 @@ const Onboarding = ({ step, setStep }) => {
             </h1>
 
             {/* Subtitle */}
-            <p className="mt-4 text-lg lg:text-xl text-[#696871] font-light leading-relaxed opacity-0 animate-[fadeIn_0.8s_ease-out_0.9s_forwards]">
+            <p className="mt-4 text-lg lg:text-lg text-[#696871] font-medium leading-relaxed opacity-0 animate-[fadeIn_0.8s_ease-out_0.9s_forwards]">
               Join a community of trusted vendors delivering innovative
               solutions.
             </p>
@@ -117,7 +120,7 @@ const Onboarding = ({ step, setStep }) => {
       <div className="h-screen flex items-center justify-center px-6  rounded-t-full">
         <div className="w-2xl max-w-fit rounded backdrop-blur-xl py-12 px-8 sm:px-12 text-center">
           <h2 className="text-3xl flex items-center gap-2 text-left font-bold text-gray-900 mb-2.5 opacity-0 animate-[fadeIn_0.8s_ease-out_0.2s_forwards]">
-            <Globe className="w-8 h-8 text-(--dark-sapphire)" />
+      
             Enter Your Domain
           </h2>
           <p className="text-gray-600 text-lg mb-3 text-left opacity-0 animate-[fadeIn_0.8s_ease-out_0.4s_forwards]">
@@ -134,7 +137,7 @@ const Onboarding = ({ step, setStep }) => {
                   setErrors({});
                 }}
                 placeholder="example.com"
-                className={`w-full py-4 border-b-2 bg-transparent text-xl transition-colors
+                className={`w-full py-4 border-b-2 bg-transparent text-lg transition-colors
                   focus:outline-none focus:ring-0 focus:border-indigo-500 placeholder-gray-400
                   ${
                     errors.domain
@@ -178,7 +181,7 @@ const Onboarding = ({ step, setStep }) => {
             Fetching data from <span className="font-semibold">{domain}</span>
           </p>
 
-          <div className="space-y-2 max-h-64 overflow-y-auto">
+          <div className="space-y-2 max-h-64 overflow-hidden">
             {progress.length > 0
               ? progress.map((msg, idx) => (
                   <div

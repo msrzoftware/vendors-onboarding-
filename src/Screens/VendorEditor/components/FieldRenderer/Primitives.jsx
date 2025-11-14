@@ -1,7 +1,9 @@
 import { TextArea, UrlInput } from "../FieldEditors";
 
-export default function PrimitiveRenderer({ field, value, onChange }) {
+export default function PrimitiveRenderer({ field, value, onChange, path = [] }) {
   if (typeof value !== "string") return null;
+
+  const fieldId = path.join('|');
 
   if (
     field &&
@@ -9,15 +11,16 @@ export default function PrimitiveRenderer({ field, value, onChange }) {
       field.includes("overview") ||
       field === "elevator_pitch")
   ) {
-    return <TextArea value={value} onChange={(v) => onChange(v)} rows={5} />;
+    return <TextArea data-field-id={fieldId} value={value} onChange={(v) => onChange(v)} rows={5} />;
   }
 
   if (field && (field.includes("url") || field.includes("website"))) {
-    return <UrlInput value={value} onChange={(v) => onChange(v)} />;
+    return <UrlInput data-field-id={fieldId} value={value} onChange={(v) => onChange(v)} />;
   }
 
   return (
     <input
+      data-field-id={fieldId}
       value={value || ""}
       className="w-full border border-(--border-light-gray) rounded-xl px-4 py-3 focus:border-[var(--dark-sapphire)] focus:outline-none"
       onChange={(e) => onChange(e.target.value)}

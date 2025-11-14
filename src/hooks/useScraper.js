@@ -50,11 +50,11 @@ export const useScraper = () => {
             case "start":
             case "reading":
             case "update":
-              setProgress((prev) => [...prev, data.message]);
+              setProgress((prev) => [...prev, data.message].slice(-2));
               break;
 
             case "complete":
-              setProgress((prev) => [...prev, data.message]);
+              setProgress((prev) => [...prev, data.message].slice(-2));
               setResult(data.data);
               setIsLoading(false);
               localStorage.setItem(
