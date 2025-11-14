@@ -5,6 +5,12 @@ import Header from "./Header";
 import MainEditor from "./MainEditor";
 
 const VendorEditor = ({ setStep }) => {
+  // Debug: Log empty fields info
+  // This will log every render, but is safe for dev
+  useEffect(() => {
+    console.log("empty fields count:", emptyFieldsCount);
+    console.log("empty fields data:", emptyFieldsData);
+  });
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");

@@ -119,7 +119,9 @@ export default function Header({
             <button onClick={loadVendors} className="px-5 py-2 border border-white/20 bg-transparent cursor-pointer hover:bg-gray-100/65 rounded-lg transition">Reset All</button>
             <button
               onClick={onSave}
-              className={`cta btn-blue`}
+              disabled={emptyFieldsCount > 0}
+              className={`cta btn-blue ${emptyFieldsCount > 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+              title={emptyFieldsCount > 0 ? `Please fill ${emptyFieldsCount} empty field(s) before saving` : 'Save and continue'}
             >
               Save & Continue
             </button>
