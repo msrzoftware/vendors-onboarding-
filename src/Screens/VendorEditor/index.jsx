@@ -396,7 +396,7 @@ const VendorEditor = ({ setStep }) => {
     vendors[0]?.description || vendors[0]?.product_description_short || "";
 
   return (
-    <div className="min-h-screen backdrop-blur-sm overflow-auto mt-6 pb-10">
+    <div className="min-h-screen backdrop-blur-sm overflow-auto pb-10">
       <style>{`
         @keyframes highlightField {
           0%, 100% {

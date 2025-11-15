@@ -84,7 +84,7 @@ const Home = () => {
                   `flex-1 flex items-center h-full justify-center rounded-r-full gap-3 px-4 py-6 text-sm font-medium transition-all duration-200 focus:outline-none ${
                     isActive
                       ? "bg-linear-to-r from-[#1e90ff] to-[#0066f0] text-white shadow-lg"
-                      : "bg-white text-gray-400 hover:text-blue-500"
+                      : "bg-white text-gray-400"
                   }` +
                   (idx === 0
                     ? " rounded-l-full"
