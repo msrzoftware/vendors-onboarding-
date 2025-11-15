@@ -21,7 +21,7 @@
   /* Borders & Shadows */
   --shadow-custom: 0px 4px 24px 5px rgba(155, 183, 255, 0.15);
   --border-light-gray: #E8EBEB;
-  --bgColor: #FFFAFB;
+  /* --bgColor: #FFFAFB; */
 }
 
 html {
@@ -29,8 +29,10 @@ html {
 }
 
 body {
+  cursor: default;
   font-family: var(--font-poppins);
-  background-color: var(--bgColor, #000);
+  /* ==== default ===== */
+  /* background-color: var(--bgColor, #000); */
   color: var(--dark-gray);
 }
 
@@ -132,6 +134,7 @@ body {
 
 
 .btn-blue {
+  cursor: pointer;
   height: 3.125rem;
   display: inline-flex;
   align-items: center;

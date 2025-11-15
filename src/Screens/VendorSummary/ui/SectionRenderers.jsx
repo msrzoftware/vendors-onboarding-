@@ -5,7 +5,7 @@ import { Box, Check, ExternalLink, Shield, Sparkles, Zap } from 'lucide-react';
 export const Card = ({ children, className = "", highlight = false }) => (
   <div 
     className={`
-      bg-white rounded-2xl p-6 border border-[#E8EBEB]
+      bg-white rounded-2xl p-3 border border-[#E8EBEB]
       ${highlight ? 'bg-linear-to-br from-[#BE7AEF]/10 via-[#51B8E6]/10 to-transparent' : ''}
       ${className}
     `}

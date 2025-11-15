@@ -16,16 +16,16 @@ const SECTION_CONFIG = {
     icon: Box,
     layout: "grid",
     render: (features) => (
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-3">
         {features.map((feature, i) => (
           <div
             key={i}
-            className="group p-5 border-l-4 border-[#51B8E6] hover:border-[#BE7AEF] bg-[#FFFAFB] hover:bg-linear-to-r hover:from-[#51B8E6]/5 hover:to-transparent rounded-lg transition-all"
+            className="group p-3 border border-(--border-light-gray) bg-white rounded-lg transition-all"
           >
-            <h4 className="font-semibold text-[#051d53] mb-2 group-hover:text-[#1920BA] transition-colors">
+            <h4 className="font-semibold text-[#051d53] mb-1 group-hover:text-[#1920BA] transition-colors text-sm">
               {feature.name}
             </h4>
-            <p className="text-[#3f3f3f] text-sm leading-relaxed">
+            <p className="text-[#3f3f3f] text-xs leading-snug">
               {feature.description}
             </p>
           </div>
@@ -40,15 +40,15 @@ const SECTION_CONFIG = {
     render: (pricing) => (
       <>
         {pricing.overview && (
-          <p className="text-[#3f3f3f] mb-8 leading-relaxed">
+          <p className="text-[#3f3f3f] mb-4 leading-snug text-sm">
             {pricing.overview}
           </p>
         )}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
           {pricing.pricing_plans?.map((plan, i) => (
             <div
               key={i}
-              className={`relative shadow rounded-xl py-6 px-4 transition-all ${
+              className={`relative shadow rounded-xl py-4 px-3 transition-all ${
                 plan.is_free
                   ? "bg-linear-to-br from-[#38c016]/10 to-[#38c016]/5 border-2 border-[#38c016]"
                   : "bg-white border-[#E8EBEB]"
@@ -60,14 +60,14 @@ const SECTION_CONFIG = {
                 </div>
               )}
               <div className="flex justify-center">
-                <h3 className="gradient-text text-[22px] mb-4 font-semibold">
+                <h3 className="gradient-text text-lg mb-2 font-semibold">
                   {plan.plan}
                 </h3>
               </div>
-              <div className="mb-4 flex items-center flex-col gap-1">
+              <div className="mb-3 flex items-center flex-col gap-1">
                 {plan.amount ? (
                   <div>
-                    <span className="max-w-full text-4xl text-center font-semibold leading-tight text-[var(--dark-gray)] block break-all whitespace-normal overflow-hidden">
+                    <span className="max-w-full text-3xl text-center font-semibold leading-tight text-[var(--dark-gray)] block break-all whitespace-normal overflow-hidden">
                       ${plan.amount}
                     </span>
                     <span className="text-[#3f3f3f] text-sm">
@@ -81,17 +81,17 @@ const SECTION_CONFIG = {
                 )}
               </div>
               {plan.period && (
-                <p className="text-sm text-center text-[#3f3f3f] mb-5 pb-5 border-b border-[#E8EBEB]">
+                <p className="text-xs text-center text-[#3f3f3f] mb-3 pb-3 border-b border-[#E8EBEB]">
                   {plan.period}
                 </p>
               )}
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {plan.description?.map((desc, j) => (
                   <li
                     key={j}
-                    className="text-sm text-[#3f3f3f] flex items-start gap-2"
+                    className="text-xs text-[#3f3f3f] flex items-start gap-2"
                   >
-                    <Check className="w-4 h-4 text-[#38c016] shrink-0 mt-0.5" />
+                    <Check className="w-3.5 h-3.5 text-[#38c016] shrink-0 mt-0.5" />
                     <span>{desc}</span>
                   </li>
                 ))}
@@ -136,11 +136,11 @@ const renderValue = (val) => {
 
     // array of objects or mixed -> render cards
     return (
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-3">
         {val.map((item, i) => (
           <div
             key={i}
-            className="p-4 border border-(--border-light-gray) rounded-lg bg-white"
+            className="p-3 border border-(--border-light-gray) rounded-lg bg-white"
           >
             {isValidObject(item) ? (
               <div className="space-y-1">
@@ -197,7 +197,7 @@ const renderDynamicSection = (key, value, overrideConfig = {}) => {
   };
 
   return (
-    <Card key={key} className="mb-8">
+    <Card key={key} className="mb-4">
       <SectionHeader title={config.title} icon={config.icon} />
       {config.render ? (
         config.render(value)
@@ -224,16 +224,16 @@ const renderDynamicSection = (key, value, overrideConfig = {}) => {
 
           if (allPrimitives && entries.length <= 6) {
             return (
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2">
                 {entries.map(([k, v]) => (
                   <div
                     key={k}
-                    className="px-4 py-3 bg-white border border-(--border-light-gray) rounded-lg min-w-40 flex-1"
+                    className="px-3 py-2 bg-white border border-(--border-light-gray) rounded-lg min-w-40 flex-1"
                   >
                     <div className="text-xs text-[#6b7280] font-semibold">
                       {formatTitle(k)}
                     </div>
-                    <div className="text-sm text-[#051d53] mt-1">
+                    <div className="text-sm text-[#051d53] mt-0.5">
                       {renderValue(v)}
                     </div>
                   </div>
@@ -244,10 +244,10 @@ const renderDynamicSection = (key, value, overrideConfig = {}) => {
 
           // Default: render detailed rows
           return (
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-4">
               {entries.map(([subKey, subValue]) => (
                 <div key={subKey}>
-                  <h3 className="text-sm font-semibold text-[#3f3f3f] mb-2">
+                  <h3 className="text-sm font-semibold text-[#3f3f3f] mb-1">
                     {formatTitle(subKey)}
                   </h3>
                   <div className="text-[#051d53]">{renderValue(subValue)}</div>
@@ -257,7 +257,9 @@ const renderDynamicSection = (key, value, overrideConfig = {}) => {
           );
         })()
       ) : (
-        <div className="text-[#3f3f3f] leading-relaxed">{renderValue(value)}</div>
+        <div className="text-[#3f3f3f] leading-relaxed">
+          {renderValue(value)}
+        </div>
       )}
     </Card>
   );
@@ -368,63 +370,52 @@ export default function VendorSummary({ setStep }) {
   return (
     <>
       {/* Hero Header Section */}
-      <div className="max-w-6xl mx-auto mt-8">
-        <div className="flex justify-between items-start gap-5 mb-2.5">
+      <div className="max-w-6xl mx-auto mt-4">
+        <div className="flex justify-between items-start gap-4 mb-3">
           <div className="flex-1">
-            <h1 className="flex items-center gap-3 mb-3 text-3xl text-[#051d53] font-semibold">
-              <Box className="w-8 h-8 text-[#BE7AEF]" />
+            <h1 className="flex items-center gap-2 mb-2 text-2xl text-[#051d53] font-semibold">
+              <Box className="w-6 h-6 text-[#BE7AEF]" />
               {vendor.product_name || vendor.company_name || "Product"}
             </h1>
             {vendor.description && (
-              <p className="text-[#3f3f3f] text-base leading-relaxed max-w-2xl">
+              <p className="text-[#3f3f3f] text-sm leading-snug max-w-2xl">
                 {vendor.description}
               </p>
             )}
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             {setStep && (
               <button
                 onClick={() => setStep(3)}
-                // className="flex items-center gap-2 px-5 py-3 bg-white hover:bg-[#E8EBEB] text-[#3f3f3f] rounded-xl border border-[#E8EBEB] transition-all font-medium"
-                className="flex items-center gap-1.5 px-5 py-3 border border-white/20 bg-transparent cursor-pointer hover:bg-gray-100/65 rounded-lg transition"
+                className="flex items-center gap-1.5 px-4 py-2 border border-white/20 bg-transparent cursor-pointer hover:bg-gray-100/65 rounded-lg transition text-sm"
               >
-                <Pencil className="w-5 h-5 text-[#BE7AEF]" /> Edit
+                <Pencil className="w-4 h-4 text-[#BE7AEF]" /> Edit
               </button>
             )}
-            {/* {vendor.website && (
-              <a
-                href={vendor.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta btn-blue font-medium"
-              >
-                Visit Website <ExternalLink className="w-4 h-4 ml-1" />
-              </a>
-            )} */}
-            <button className="cta btn-blue font-medium">Submit</button>
+            <button className="cta btn-blue font-medium text-sm px-4 py-2">Submit</button>
           </div>
         </div>
 
         {/* Dynamic Sections */}
-        <div className="my-8 h-[calc(100dvh-235px)] overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div className="my-4 h-[calc(100dvh-160px)] overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {/* Top cards: Product & Company name (two-column) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
             <div>
-              <div className="p-4 bg-white border border-(--border-light-gray) rounded-lg">
+              <div className="p-3 bg-white border border-(--border-light-gray) rounded-lg">
                 <div className="text-xs text-[#6b7280] font-semibold">
                   Product Name
                 </div>
-                <div className="text-sm text-[#051d53] mt-1">
+                <div className="text-sm text-[#051d53] mt-0.5">
                   {vendor.product_name || <Placeholder />}
                 </div>
               </div>
             </div>
             <div>
-              <div className="p-4 bg-white border border-(--border-light-gray) rounded-lg">
+              <div className="p-3 bg-white border border-(--border-light-gray) rounded-lg">
                 <div className="text-xs text-[#6b7280] font-semibold">
                   Company Name
                 </div>
-                <div className="text-sm text-[#051d53] mt-1">
+                <div className="text-sm text-[#051d53] mt-0.5">
                   {vendor.company_name || <Placeholder />}
                 </div>
               </div>
@@ -432,13 +423,13 @@ export default function VendorSummary({ setStep }) {
           </div>
 
           {/* Second row: Company Website & HQ Location */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
             <div>
               <div className="p-3 bg-white border border-(--border-light-gray) rounded-lg">
                 <div className="text-xs text-[#6b7280] font-semibold">
                   Website
                 </div>
-                <div className="text-sm text-[#051d53] mt-1">
+                <div className="text-sm text-[#051d53] mt-0.5">
                   {vendor.company_website || vendor.website || vendor.weburl ? (
                     <a
                       href={
@@ -465,7 +456,7 @@ export default function VendorSummary({ setStep }) {
                 <div className="text-xs text-[#6b7280] font-semibold">
                   HQ Location
                 </div>
-                <div className="text-sm text-[#051d53] mt-1">
+                <div className="text-sm text-[#051d53] mt-0.5">
                   {vendor.hq_location || <Placeholder />}
                 </div>
               </div>
@@ -481,12 +472,12 @@ export default function VendorSummary({ setStep }) {
             )}
 
           {/* Parent / Sub category row (two columns) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-3">
             <div className="p-3 bg-white border border-(--border-light-gray) rounded-lg">
               <div className="text-xs text-[#6b7280] font-semibold">
                 Parent Category
               </div>
-              <div className="text-sm text-[#051d53] mt-1">
+              <div className="text-sm text-[#051d53] mt-0.5">
                 {vendor.parent_category || <Placeholder />}
               </div>
             </div>
@@ -494,7 +485,7 @@ export default function VendorSummary({ setStep }) {
               <div className="text-xs text-[#6b7280] font-semibold">
                 Sub Category
               </div>
-              <div className="text-sm text-[#051d53] mt-1">
+              <div className="text-sm text-[#051d53] mt-0.5">
                 {vendor.sub_category || <Placeholder />}
               </div>
             </div>

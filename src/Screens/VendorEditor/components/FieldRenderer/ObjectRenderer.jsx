@@ -18,12 +18,12 @@ export default function ObjectRenderer({ field, value, path = [], onChange }) {
         .toLowerCase()
         .replace(/\s+/g, "_")
         .replace(/[^a-z0-9_]/g, "");
-      
-      onChange({ 
-        ...(value || {}), 
-        [fieldKey]: newFieldValue 
+
+      onChange({
+        ...(value || {}),
+        [fieldKey]: newFieldValue,
       });
-      
+
       // Reset the form
       setNewFieldName("");
       setNewFieldValue("");
@@ -33,21 +33,34 @@ export default function ObjectRenderer({ field, value, path = [], onChange }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      {Object.entries(value).map(([k, v]) => (
-        <div key={k}>
-          <label className="block text-[13px] mb-1.5 text-(--dark-gray)">
-            {prettifyKey(k)}
-          </label>
-          <FieldRenderer
-            field={k}
-            value={v}
-            path={[...path, k]}
-            onChange={(childVal) =>
-              onChange({ ...(value || {}), [k]: childVal })
-            }
-          />
-        </div>
-      ))}
+      {Object.entries(value).map(([k, v]) => {
+        const fieldPath = [...path, k];
+        const id = fieldPath.join("|");
+        const isArrayLike = Array.isArray(v);
+
+        return (
+          <div
+            key={k}
+            data-field-id={id}
+            className="flex flex-col gap-1.5"
+            {...(isArrayLike && { "data-array-wrapper": "true" })}
+          >
+            <label className="block text-[13px] text-(--dark-gray)">
+              {prettifyKey(k)}
+            </label>
+            <div data-array-wrapper-content={isArrayLike ? "true" : undefined}>
+              <FieldRenderer
+                field={k}
+                value={v}
+                path={fieldPath}
+                onChange={(childVal) =>
+                  onChange({ ...(value || {}), [k]: childVal })
+                }
+              />
+            </div>
+          </div>
+        );
+      })}
 
       {/* Don't allow adding arbitrary fields to contact/support sections */}
       {!(
@@ -113,7 +126,7 @@ export default function ObjectRenderer({ field, value, path = [], onChange }) {
           ) : (
             <button
               onClick={() => setShowAddDialog(true)}
-              className="w-full p-2 rounded-md border border-(--dark-gray) bg-[#F2F7FF] cursor-pointer transition-colors"
+              className="w-full cta btn-blue"
             >
               + Add field
             </button>
