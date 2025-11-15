@@ -181,7 +181,7 @@ const Onboarding = ({ step, setStep }) => {
             Fetching data from <span className="font-semibold">{domain}</span>
           </p>
 
-          <div className="space-y-2 max-h-64 w-fit overflow-hidden">
+          <div className="space-y-2 max-h-64 w-full overflow-hidden">
             {progress.length > 0
               ? progress.map((msg, idx) => (
                   <div
