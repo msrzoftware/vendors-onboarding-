@@ -25,7 +25,10 @@ export const UrlInput = memo(
         {...rest}
         className="w-full pl-9 pr-3.5 py-3 mb-3 rounded-lg border border-gray-300 text-xs text-(--dark-gray) transition-colors duration-200 outline-none focus:border-[var(--dark-sapphire)] focus:outline-none"
       />
-      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs select-none">
+      <span
+        className="absolute left-3 top-1/2 -translate-y-[100%] flex items-center justify-center text-gray-500 text-xs leading-none select-none"
+        aria-hidden="true"
+      >
         🔗
       </span>
     </div>

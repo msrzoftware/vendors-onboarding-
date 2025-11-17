@@ -426,7 +426,7 @@ export default function MainEditor({
       </div>
 
       {showEmptyPanel && (
-        <div className="w-72 min-w-[220px] h-[calc(100dvh-245px)] sticky top-24 self-start">
+        <div className="w-72 min-w-[220px] h-[calc(100dvh-335px)] sticky top-24 self-start">
           <EmptyFieldsPanel emptyFieldsData={emptyFieldsData} handleFieldClick={handleFieldClick} onClose={() => setShowEmptyPanel(false)} />
         </div>
       )}
