@@ -22,7 +22,7 @@ export default function PrimitiveRenderer({ field, value, onChange, path = [] })
     <input
       data-field-id={fieldId}
       value={value || ""}
-      className="w-full border border-(--border-light-gray) rounded-xl px-4 py-3 focus:border-[var(--dark-sapphire)] focus:outline-none"
+      className="w-full text-xs text-(--dark-gray) border border-(--border-light-gray) rounded-xl px-4 py-3 focus:border-(--dark-sapphire) focus:outline-none"
       onChange={(e) => onChange(e.target.value)}
     />
   );

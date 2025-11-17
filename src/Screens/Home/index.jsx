@@ -2,7 +2,29 @@ import { useState } from "react";
 import Onboarding from "../Onboarding/index.jsx";
 
 const Home = () => {
-  const [step, setStep] = useState(0);
+  // persist onboarding step in localStorage so it survives reloads
+  const STORAGE_KEY = "onboarding_step";
+  const [step, setStep] = useState(() => {
+    try {
+      const v = localStorage.getItem(STORAGE_KEY);
+      return v !== null ? Number(v) : 0;
+    } catch {
+      return 0;
+    }
+  });
+
+  const setStepPersist = (next) => {
+    const ns = Number(next);
+    if (Number.isNaN(ns)) return;
+    // clamp between 0 and 4
+    const clamped = Math.max(0, Math.min(4, ns));
+    try {
+      localStorage.setItem(STORAGE_KEY, String(clamped));
+    } catch {
+      /* ignore storage errors */
+    }
+    setStep(clamped);
+  };
 
   return (
     <div className="flex flex-col h-screen">
@@ -76,14 +98,24 @@ const Home = () => {
             else if (step === 3) activeIdx = 2; // Editor
             else activeIdx = arr.length - 1; // Summary
             const isActive = activeIdx !== null && idx === activeIdx;
+            // const handleClick = () => {
+            //   // Map visual tab index to onboarding steps: Home(0), Domain(1), Editor(3), Summary(4)
+            //   let targetStep = 0;
+            //   if (idx === 0) targetStep = 0;
+            //   else if (idx === 1) targetStep = 1;
+            //   else if (idx === 2) targetStep = 3;
+            //   else targetStep = 4;
+            //   setStepPersist(targetStep);
+            // };
+
             return (
               <button
                 key={tab.label}
-                // onClick={() => setStep(Math.min(idx, 3))}
+                // onClick={handleClick}
                 className={
-                  `flex-1 flex items-center h-full justify-center rounded-r-full gap-3 px-4 py-6 text-sm font-medium transition-all duration-200 focus:outline-none ${
+                  `flex-1 flex items-center h-full justify-center rounded-full gap-3 px-4 py-6 text-sm font-medium transition-all duration-200 focus:outline-none ${
                     isActive
-                      ? "bg-linear-to-r from-[#1e90ff] to-[#0066f0] text-white shadow-lg"
+                      ? "bg-linear-to-r from-[#1e90ff] to-[#0066f0] text-white shadow-lg rounded-full"
                       : "bg-white text-gray-400"
                   }` +
                   (idx === 0
@@ -103,7 +135,7 @@ const Home = () => {
 
       {/* Bottom Onboarding Section */}
       <div className="flex-1 w-full z-50 bg-white overflow-hidden">
-        <Onboarding step={step} setStep={setStep} />
+        <Onboarding step={step} setStep={setStepPersist} />
       </div>
     </div>
   );

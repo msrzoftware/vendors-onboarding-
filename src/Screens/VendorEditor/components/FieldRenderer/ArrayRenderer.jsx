@@ -20,7 +20,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
                   newArray[idx] = e.target.value;
                   onChange(newArray);
                 }}
-                className="w-full border border-(--border-light-gray) rounded-lg px-4 py-2 focus:border-(--dark-sapphire) focus:outline-none"
+                className="w-full text-(--dark-gray) text-xs border border-(--border-light-gray) rounded-lg px-4 py-2 focus:border-(--dark-sapphire) focus:outline-none"
                 placeholder="Enter description item..."
               />
             </div>
@@ -56,7 +56,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
               style={{ display: "flex", gap: 8, alignItems: "start" }}
             >
               <div style={{ flex: 1 }}>
-                <label className="block text-[12px] text-(--dark-gray) mb-1.5">
+                <label className="block text-[12px] font-semibold text-(--dark-gray) mb-1.5">
                   Type
                 </label>
                 <input
@@ -67,7 +67,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
                     newArray[idx] = { type: e.target.value };
                     onChange(newArray);
                   }}
-                  className="w-full border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none rounded-lg px-4 py-3"
+                  className="w-full border text-xs border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none rounded-lg px-4 py-3"
                   placeholder="Enter type..."
                 />
               </div>
@@ -112,7 +112,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
             >
               <div className="flex-1 grid grid-cols-1 gap-2">
                 <div data-field-id={[...path, idx, 'name'].join('|')}>
-                  <label className="block text-[12px] text-(--dark-gray) mb-1.5">
+                  <label className="block text-[12px] font-semibold text-(--dark-gray) mb-1.5">
                     Name
                   </label>
                   <input
@@ -126,12 +126,12 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
                       };
                       onChange(newArray);
                     }}
-                    className="w-full p-2.5 rounded-md border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none"
+                    className="w-full text-xs p-2.5 rounded-md border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none"
                   />
                 </div>
 
                 <div data-field-id={[...path, idx, 'description'].join('|')}>
-                  <label className="block text-[12px] text-(--dark-gray) mb-1.5">
+                  <label className="block text-[12px] font-semibold text-(--dark-gray) mb-1.5">
                     Description
                   </label>
                   <TextArea
@@ -184,7 +184,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
             >
               <div className="flex justify-between items-start">
                 <div className="flex-1">
-                  <label className="block text-[12px] text-gray-600 mb-1">
+                  <label className="block text-sm text-(--dark-gray) mb-1">
                     Name
                   </label>
                   <input
@@ -199,10 +199,10 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
                       };
                       onChange(newArray);
                     }}
-                    className="w-full p-2.5 border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none rounded-lg mb-3"
+                    className="w-full text-xs p-2.5 border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none rounded-lg mb-3"
                   />
 
-                  <label className="block text-[12px] text-gray-600 mb-1">
+                  <label className="block text-sm text-(--dark-gray) mb-1">
                     Website
                   </label>
                   <UrlInput
@@ -220,7 +220,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
                     className="mb-3"
                   />
 
-                  <label className="block text-[12px] text-gray-600 mb-1">
+                  <label className="block text-sm text-(--dark-gray) mb-1">
                     Logo URL
                   </label>
                   <UrlInput
@@ -276,7 +276,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
               <input
                 data-field-id={[...path, idx].join('|')}
                 value={item}
-                className="flex-1 p-2 rounded border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none"
+                className="flex-1 text-xs p-2 rounded border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none"
                 onChange={(e) => {
                   const newArray = [...value];
                   newArray[idx] = e.target.value;
@@ -334,7 +334,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
                         };
                         onChange(newArray);
                       }}
-                      className="border border-(--border-light-gray) rounded-lg ps-9 pt-3 pe-3.5 pb-3 focus:border-(--dark-sapphire) focus:outline-none"
+                      className="border text-xs border-(--border-light-gray) rounded-lg ps-9 pt-3 pe-3.5 pb-3 focus:border-(--dark-sapphire) focus:outline-none"
                       placeholder="e.g., LinkedIn"
                     />
                   </div>
@@ -398,7 +398,7 @@ export default function ArrayRenderer({ field, value, path = [], onChange }) {
                 newArray[idx] = e.target.value;
                 onChange(newArray);
               }}
-              className="flex-1 p-2 rounded-md border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none"
+              className="flex-1 text-xs text-(--dark-gray) p-2 rounded-md border border-(--border-light-gray) focus:border-(--dark-sapphire) focus:outline-none"
             />
           ) : (
             <div className="flex-1">

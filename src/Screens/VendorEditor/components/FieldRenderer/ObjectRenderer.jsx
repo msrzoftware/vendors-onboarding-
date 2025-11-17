@@ -45,7 +45,7 @@ export default function ObjectRenderer({ field, value, path = [], onChange }) {
             className="flex flex-col gap-1.5"
             {...(isArrayLike && { "data-array-wrapper": "true" })}
           >
-            <label className="block text-[13px] text-(--dark-gray)">
+            <label className="block text-sm text-(--dark-gray) font-medium">
               {prettifyKey(k)}
             </label>
             <div data-array-wrapper-content={isArrayLike ? "true" : undefined}>

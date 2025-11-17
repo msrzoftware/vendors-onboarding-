@@ -26,7 +26,8 @@ const Onboarding = ({ step, setStep }) => {
         const parsed = JSON.parse(storedData);
         if (parsed.success && parsed.data) {
           setCompanyData(parsed.data);
-          setStep(3);
+          // Only move to the editor if the current step is before the editor
+          if (typeof step === "number" && step < 3) setStep(3);
         }
       } catch (err) {
         console.error("Failed to parse stored data:", err);
@@ -34,14 +35,14 @@ const Onboarding = ({ step, setStep }) => {
     } else {
       resumeJob();
     }
-  }, [resumeJob, setStep]);
+  }, [resumeJob, setStep, step]);
 
   useEffect(() => {
     if (result) {
       setCompanyData(result);
-      setStep(3);
+      if (typeof step === "number" && step < 3) setStep(3);
     }
-  }, [result, setStep]);
+  }, [result, setStep, step]);
 
   useEffect(() => {
     if (apiError) {
@@ -95,7 +96,7 @@ const Onboarding = ({ step, setStep }) => {
             </h1>
 
             {/* Subtitle */}
-            <p className="mt-4 text-lg lg:text-lg text-[#696871] font-medium leading-relaxed opacity-0 animate-[fadeIn_0.8s_ease-out_0.9s_forwards]">
+            <p className="mt-4 text-lg lg:text-lg text-[#696871] font-normal leading-relaxed opacity-0 animate-[fadeIn_0.8s_ease-out_0.9s_forwards]">
               Join a community of trusted vendors delivering innovative
               solutions.
             </p>
@@ -117,13 +118,13 @@ const Onboarding = ({ step, setStep }) => {
   // 🟣 Domain Step
   if (step === 1) {
     return (
-      <div className="h-screen flex items-center justify-center px-6  rounded-t-full">
+      <div className="h-[calc(100dvh-100px)] flex items-center justify-center px-6  rounded-t-full">
         <div className="w-2xl max-w-fit rounded backdrop-blur-xl py-12 px-8 sm:px-12 text-center">
-          <h2 className="text-3xl flex items-center gap-2 text-left font-bold text-gray-900 mb-2.5 opacity-0 animate-[fadeIn_0.8s_ease-out_0.2s_forwards]">
+          <h2 className="text-3xl flex items-center gap-2 text-left font-semibold text-[#3F3F3F] mb-2.5 opacity-0 animate-[fadeIn_0.8s_ease-out_0.2s_forwards]">
       
             Enter Your Domain
           </h2>
-          <p className="text-gray-600 text-lg mb-3 text-left opacity-0 animate-[fadeIn_0.8s_ease-out_0.4s_forwards]">
+          <p className="text-[#3F3F3F] text-lg mb-2 text-left opacity-0 animate-[fadeIn_0.8s_ease-out_0.4s_forwards]">
             We'll automatically retrieve your company information
           </p>
 
@@ -138,7 +139,7 @@ const Onboarding = ({ step, setStep }) => {
                 }}
                 placeholder="example.com"
                 className={`w-full py-4 border-b-2 bg-transparent text-lg transition-colors
-                  focus:outline-none focus:ring-0 focus:border-indigo-500 placeholder-gray-400
+                  focus:outline-none focus:ring-0 focus:border-indigo-500 placeholder-[#3F3F3F]/35
                   ${
                     errors.domain
                       ? "border-red-500 text-red-700 placeholder-red-400"
@@ -170,7 +171,7 @@ const Onboarding = ({ step, setStep }) => {
   if (isLoading || step === 2) {
     return (
       <div className="h-full flex items-center justify-center px-6">
-        <div className="w-full max-w-md mx-auto p-6 text-center">
+        <div className="w-full max-w-xl mx-auto p-6 text-center">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full mb-4">
             <Sparkles className="w-10 h-10 text-indigo-600 animate-pulse" />
           </div>

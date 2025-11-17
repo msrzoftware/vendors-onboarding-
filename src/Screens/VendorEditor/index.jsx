@@ -1,16 +1,17 @@
-import React, { useEffect, useState, useMemo, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+} from "react";
 import { LS_KEY, FIELD_GROUPS, prettifyKey, SECTIONS } from "./utils";
 import { AlertCircle } from "lucide-react";
 import Header from "./Header";
 import MainEditor from "./MainEditor";
 
 const VendorEditor = ({ setStep }) => {
-  // Debug: Log empty fields info
-  // This will log every render, but is safe for dev
-  useEffect(() => {
-    console.log("empty fields count:", emptyFieldsCount);
-    console.log("empty fields data:", emptyFieldsData);
-  });
+  // (removed debug useEffect that referenced variables before declaration)
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
@@ -221,110 +222,167 @@ const VendorEditor = ({ setStep }) => {
     return result;
   }, [vendors]);
 
-  const handleFieldClick = (sectionKey, path) => {
-    // Expand the section
-    setExpandedSections((prev) => ({
-      ...prev,
-      [sectionKey]: true,
-    }));
+  const handleFieldClick = useCallback(
+    (sectionKey, path) => {
+      // Expand the section
+      setExpandedSections((prev) => ({
+        ...prev,
+        [sectionKey]: true,
+      }));
 
-    // Use setTimeout to ensure the section is expanded before scrolling
-    setTimeout(() => {
-      // if a specific path is provided, try to find an element with matching data-field-id
-      let el;
-      if (Array.isArray(path) && path.length > 0) {
-        const id = path.join("|");
-        el = document.querySelector(`[data-field-id="${id}"]`);
-      }
-      // fallback to section container
-      if (!el) el = sectionRefs.current?.[sectionKey];
-      if (!el) return;
-
-      // find nearest scrollable ancestor
-      let container = el.parentElement;
-      while (container && container !== document.body) {
-        const style = window.getComputedStyle(container);
-        const overflowY = style.overflowY;
-        if (overflowY === "auto" || overflowY === "scroll") break;
-        container = container.parentElement;
-      }
-
-      const headerEl = document.querySelector(".sticky");
-      const headerHeight = headerEl
-        ? headerEl.getBoundingClientRect().height
-        : 80;
-
-      if (container && container !== document.body) {
-        // scroll inside the container
-        const containerRect = container.getBoundingClientRect();
-        const elRect = el.getBoundingClientRect();
-        const offset =
-          elRect.top - containerRect.top + container.scrollTop - headerHeight;
-        container.scrollTo({ top: offset, behavior: "smooth" });
-      } else {
-        // fallback to window scroll
-        const elementPosition =
-          window.pageYOffset + el.getBoundingClientRect().top;
-        window.scrollTo({
-          top: elementPosition - headerHeight,
-          behavior: "smooth",
-        });
-      }
-
-      // Find and highlight the field container and its input
-      let fieldContainerEl;
-      if (Array.isArray(path) && path.length > 0) {
-        const selector = `[data-field-id="${path.join("|")}"]`;
-        fieldContainerEl =
-          document.querySelector(`${selector}[data-array-wrapper="true"]`) ||
-          document.querySelector(selector);
-      }
-
-      if (!fieldContainerEl) {
-        fieldContainerEl =
-          el.querySelector("[data-array-wrapper='true']") ||
-          el.querySelector("[data-field-id]") ||
-          el
-            .querySelector("input, textarea, select")
-            ?.closest("[data-field-id]");
-      }
-
-      if (fieldContainerEl) {
-        try {
-          // If the container is itself an input/textarea/select, highlight it directly.
-          const isInputElement =
-            fieldContainerEl instanceof Element &&
-            fieldContainerEl.matches &&
-            fieldContainerEl.matches("input, textarea, select");
-
-          let targetEl = null;
-          if (isInputElement) {
-            targetEl = fieldContainerEl;
-          } else {
-            // Prefer highlighting the actual input inside the container if present
-            targetEl =
-              fieldContainerEl.querySelector("input, textarea, select") ||
-              fieldContainerEl;
-          }
-
-          targetEl.classList.add("highlight-empty-field");
-          setTimeout(
-            () => targetEl.classList.remove("highlight-empty-field"),
-            2000
-          );
-        } catch {
-          // Fallback: add class to the container
-          fieldContainerEl.classList.add("highlight-empty-field");
-          setTimeout(
-            () => fieldContainerEl.classList.remove("highlight-empty-field"),
-            2000
-          );
+      // Use setTimeout to ensure the section is expanded before scrolling
+      setTimeout(() => {
+        // if a specific path is provided, try to find an element with matching data-field-id
+        let el;
+        if (Array.isArray(path) && path.length > 0) {
+          const id = path.join("|");
+          el = document.querySelector(`[data-field-id="${id}"]`);
         }
-      }
-    }, 120);
-  };
+        // fallback to section container
+        if (!el) el = sectionRefs.current?.[sectionKey];
+        if (!el) return;
 
-  
+        // find nearest scrollable ancestor
+        let container = el.parentElement;
+        while (container && container !== document.body) {
+          const style = window.getComputedStyle(container);
+          const overflowY = style.overflowY;
+          if (overflowY === "auto" || overflowY === "scroll") break;
+          container = container.parentElement;
+        }
+
+        const headerEl = document.querySelector(".sticky");
+        const headerHeight = headerEl
+          ? headerEl.getBoundingClientRect().height
+          : 80;
+
+        if (container && container !== document.body) {
+          // scroll inside the container
+          const containerRect = container.getBoundingClientRect();
+          const elRect = el.getBoundingClientRect();
+          const offset =
+            elRect.top - containerRect.top + container.scrollTop - headerHeight;
+          container.scrollTo({ top: offset, behavior: "smooth" });
+        } else {
+          // fallback to window scroll
+          const elementPosition =
+            window.pageYOffset + el.getBoundingClientRect().top;
+          window.scrollTo({
+            top: elementPosition - headerHeight,
+            behavior: "smooth",
+          });
+        }
+
+        // Find and highlight the field container and its input
+        let fieldContainerEl;
+        if (Array.isArray(path) && path.length > 0) {
+          const selector = `[data-field-id="${path.join("|")}"]`;
+          fieldContainerEl =
+            document.querySelector(`${selector}[data-array-wrapper="true"]`) ||
+            document.querySelector(selector);
+        }
+
+        if (!fieldContainerEl) {
+          fieldContainerEl =
+            el.querySelector("[data-array-wrapper='true']") ||
+            el.querySelector("[data-field-id]") ||
+            el
+              .querySelector("input, textarea, select")
+              ?.closest("[data-field-id]");
+        }
+
+        if (fieldContainerEl) {
+          try {
+            // If the container is itself an input/textarea/select, highlight it directly.
+            const isInputElement =
+              fieldContainerEl instanceof Element &&
+              fieldContainerEl.matches &&
+              fieldContainerEl.matches("input, textarea, select");
+
+            let targetEl = null;
+            if (isInputElement) {
+              targetEl = fieldContainerEl;
+            } else {
+              // Prefer highlighting the actual input inside the container if present
+              targetEl =
+                fieldContainerEl.querySelector("input, textarea, select") ||
+                fieldContainerEl;
+            }
+
+            targetEl.classList.add("highlight-empty-field");
+            setTimeout(
+              () => targetEl.classList.remove("highlight-empty-field"),
+              2000
+            );
+          } catch {
+            // Fallback: add class to the container
+            fieldContainerEl.classList.add("highlight-empty-field");
+            setTimeout(
+              () => fieldContainerEl.classList.remove("highlight-empty-field"),
+              2000
+            );
+          }
+        }
+      }, 120);
+    },
+    [setExpandedSections, sectionRefs]
+  );
+
+  // Auto-highlight all empty fields in Basic Information on user's first visit (session-based)
+  useEffect(() => {
+    const seenKey = "vendoreditor_auto_highlight_done";
+    if (sessionStorage.getItem(seenKey)) return;
+    if (loading) return;
+    try {
+      const basic = emptyFieldsData?.[SECTIONS.BASIC];
+      if (basic && Array.isArray(basic.fields) && basic.fields.length > 0) {
+        // Ensure section is expanded so fields are in the DOM
+        setExpandedSections((prev) => ({ ...prev, [SECTIONS.BASIC]: true }));
+
+        // Scroll to the first empty field to give context
+        const first = basic.fields[0];
+        if (first && first.path) {
+          handleFieldClick(SECTIONS.BASIC, first.path);
+        }
+
+        // After a short delay (allow DOM to render), highlight all empty fields
+        setTimeout(() => {
+          basic.fields.forEach((item) => {
+            const id = Array.isArray(item.path)
+              ? item.path.join("|")
+              : String(item.path);
+            let el = document.querySelector(`[data-field-id="${id}"]`);
+            if (!el) {
+              const sectionEl = sectionRefs.current?.[SECTIONS.BASIC];
+              if (sectionEl) {
+                el =
+                  sectionEl.querySelector(`[data-field-id="${id}"]`) ||
+                  sectionEl;
+              }
+            }
+            if (!el) return;
+
+            const target =
+              (el.querySelector &&
+                (el.querySelector("input, textarea, select") || el)) ||
+              el;
+            try {
+              target.classList.add("highlight-empty-field");
+              setTimeout(
+                () => target.classList.remove("highlight-empty-field"),
+                2000
+              );
+            } catch {
+              // ignore
+            }
+          });
+          sessionStorage.setItem(seenKey, "1");
+        }, 220);
+      }
+    } catch {
+      // ignore
+    }
+  }, [emptyFieldsData, loading, handleFieldClick, setExpandedSections]);
 
   function loadVendors() {
     setLoading(true);
@@ -388,15 +446,15 @@ const VendorEditor = ({ setStep }) => {
     });
   }
 
-  // const companyName =
-  //   vendors[0]?.company_name || vendors[0]?.product_name || "Company Profile";
+  const companyName =
+    vendors[0]?.company_name || vendors[0]?.product_name || "Company Profile";
   const productName =
     vendors[0]?.productName || vendors[0]?.product_name || "Product Details";
   const companyDesc =
     vendors[0]?.description || vendors[0]?.product_description_short || "";
 
   return (
-    <div className="min-h-screen backdrop-blur-sm overflow-auto pb-10">
+    <div className="min-h-screen backdrop-blur-sm overflow-auto mt-6 pb-10">
       <style>{`
         @keyframes highlightField {
           0%, 100% {
@@ -436,6 +494,7 @@ const VendorEditor = ({ setStep }) => {
         loadVendors={loadVendors}
         onSave={saveVendors}
         productName={productName}
+        companyName={companyName}
         companyDesc={companyDesc}
       />
 
@@ -465,14 +524,20 @@ const VendorEditor = ({ setStep }) => {
               <AlertCircle className="h-8 w-8 text-red-500" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-(--dark-blue)">Leave editor?</h3>
-              <p className="mt-2 text-sm text-(--dark-gray)">You will lose your progress. Are you sure you want to go back?</p>
+              <h3 className="text-lg font-semibold text-(--dark-blue)">
+                Leave editor?
+              </h3>
+              <p className="mt-2 text-sm text-(--dark-gray)">
+                You will lose your progress. Are you sure you want to go back?
+              </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
               <button
                 onClick={() => {
                   localStorage.removeItem(LS_KEY);
-                  ["currentJobId", "jobStartTime", "jobUrl"].forEach((key) => localStorage.removeItem(key));
+                  ["currentJobId", "jobStartTime", "jobUrl"].forEach((key) =>
+                    localStorage.removeItem(key)
+                  );
                   setShowLeaveConfirm(false);
                   setStep(0);
                 }}
@@ -480,7 +545,10 @@ const VendorEditor = ({ setStep }) => {
               >
                 Yes, start over
               </button>
-              <button onClick={() => setShowLeaveConfirm(false)} className="flex-1 rounded-lg border border-(--border-light-gray) px-4 py-2 text-(--dark-blue) text-nowrap transition hover:bg-gray-50">
+              <button
+                onClick={() => setShowLeaveConfirm(false)}
+                className="flex-1 rounded-lg border border-(--border-light-gray) px-4 py-2 text-(--dark-blue) text-nowrap transition hover:bg-gray-50"
+              >
                 No, keep editing
               </button>
             </div>

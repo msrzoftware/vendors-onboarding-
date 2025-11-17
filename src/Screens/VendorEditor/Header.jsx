@@ -1,5 +1,11 @@
 import React from "react";
-import { ArrowLeft, Box, ListChecks, PanelRightClose } from "lucide-react";
+import {
+  ArrowLeft,
+  Box,
+  Building2,
+  ListChecks,
+  PanelRightClose,
+} from "lucide-react";
 
 export default function Header({
   message,
@@ -12,6 +18,7 @@ export default function Header({
   loadVendors,
   onSave,
   productName,
+  companyName,
   companyDesc,
 }) {
   return (
@@ -19,7 +26,9 @@ export default function Header({
       {/* Animated Message */}
       <div
         className={`overflow-hidden transition-all duration-500 ease-in-out ${
-          message ? "opacity-100 max-h-20 translate-y-0" : "opacity-0 max-h-0 -translate-y-3"
+          message
+            ? "opacity-100 max-h-20 translate-y-0"
+            : "opacity-0 max-h-0 -translate-y-3"
         }`}
       >
         {message && (
@@ -47,31 +56,35 @@ export default function Header({
               <ArrowLeft className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
               Go Back
             </button>
-
-            {/* Expand All */}
-            <button
-              onClick={() =>
-                setExpandedSections(
-                  Object.fromEntries(Object.keys(expandedSections).map((k) => [k, true]))
-                )
-              }
-              className="text-sm font-light text-(--deep-blue) hover:underline transition-colors"
-            >
-              Expand All
-            </button>
-
-            {/* Collapse All */}
-            <button
-              onClick={() =>
-                setExpandedSections(
-                  Object.fromEntries(Object.keys(expandedSections).map((k) => [k, false]))
-                )
-              }
-              className="text-sm font-light text-(--deep-blue) hover:underline transition-colors"
-            >
-              Collapse All
-            </button>
           </div>
+          {/* Expand All */}
+          <button
+            onClick={() =>
+              setExpandedSections(
+                Object.fromEntries(
+                  Object.keys(expandedSections).map((k) => [k, true])
+                )
+              )
+            }
+            className="text-sm font-medium text-(--deep-blue) hover:underline transition-colors"
+          >
+            Expand All
+          </button>
+
+          {/* Collapse All */}
+          <button
+            onClick={() =>
+              setExpandedSections(
+                Object.fromEntries(
+                  Object.keys(expandedSections).map((k) => [k, false])
+                )
+              )
+            }
+            className="text-sm font-medium text-(--deep-blue) hover:underline transition-colors"
+          >
+            Collapse All
+          </button>
+
           {/* Empty fields count badge (click to navigate through empty sections) */}
           <button
             onClick={() => setShowEmptyPanel((prev) => !prev)}
@@ -81,7 +94,9 @@ export default function Header({
           ? "border-gray-200 text-gray-700 hover:bg-gray-50"
           : "border-yellow-200 text-yellow-700 hover:bg-yellow-50"
       }`}
-            aria-label={showEmptyPanel ? "Hide empty fields" : "Show empty fields"}
+            aria-label={
+              showEmptyPanel ? "Hide empty fields" : "Show empty fields"
+            }
             title={
               emptyFieldsCount > 0
                 ? `${emptyFieldsCount} empty field(s) — click to view details`
@@ -92,7 +107,8 @@ export default function Header({
               <>
                 <ListChecks className="w-4 h-4 text-yellow-600" />
                 <span>
-                  {emptyFieldsCount} empty {emptyFieldsCount === 1 ? "field" : "fields"}
+                  {emptyFieldsCount} empty{" "}
+                  {emptyFieldsCount === 1 ? "field" : "fields"}
                 </span>
               </>
             ) : (
@@ -108,20 +124,38 @@ export default function Header({
             <h1 className="flex items-center gap-2 my-1.5 text-2xl text-(--dark-gray) font-semibold">
               <Box className="w-6 h-6" /> {productName}
             </h1>
-            {productName && (
-              <p className="max-w-2xl mb-2.5 text-sm leading-relaxed">{productName}</p>
-            )}
+            <h2 className="flex items-center gap-2">
+              <Building2 className="w-4 h-4" />
+              {companyName && (
+                <p className="max-w-2xl text-sm leading-relaxed">
+                  {companyName}
+                </p>
+              )}
+            </h2>
             {companyDesc && (
-              <p className="max-w-2xl mb-2.5 text-sm leading-relaxed">{companyDesc}</p>
+              <p className="max-w-2xl mb-2.5 text-sm leading-relaxed">
+                {companyDesc}
+              </p>
             )}
           </div>
           <div className="flex gap-3 self-center">
-            <button onClick={loadVendors} className="px-5 py-2 border border-white/20 bg-transparent cursor-pointer hover:bg-gray-100/65 rounded-lg transition">Reset All</button>
+            <button
+              onClick={loadVendors}
+              className="px-5 py-2 border border-white/20 bg-transparent cursor-pointer hover:bg-gray-100/65 rounded-lg transition text-nowrap"
+            >
+              Reset All
+            </button>
             <button
               onClick={onSave}
               disabled={emptyFieldsCount > 0}
-              className={`cta btn-blue ${emptyFieldsCount > 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-              title={emptyFieldsCount > 0 ? `Please fill ${emptyFieldsCount} empty field(s) before saving` : 'Save and continue'}
+              className={`cta btn-blue ${
+                emptyFieldsCount > 0 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              title={
+                emptyFieldsCount > 0
+                  ? `Please fill ${emptyFieldsCount} empty field(s) before saving`
+                  : "Save and continue"
+              }
             >
               Save & Continue
             </button>
