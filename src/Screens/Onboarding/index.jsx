@@ -49,21 +49,33 @@ const Onboarding = ({ step, setStep }) => {
       setErrors({ general: apiError });
     }
   }, [apiError]);
-
+  
   const handleDomainSubmit = (e) => {
     e.preventDefault();
-    const urlPattern =
-      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\w/ .-]*)*\/?$/;
-    if (!domain) {
+
+    // Auto-convert to lowercase
+    const normalizedDomain = domain.trim().toLowerCase();
+
+    // More accurate and simple domain regex
+    const urlPattern = /^[a-z0-9.-]+\.[a-z]{2,}$/;
+
+    if (!normalizedDomain) {
       setErrors({ domain: "Please enter a domain name" });
       return;
     }
-    if (!urlPattern.test(domain)) {
-      setErrors({ domain: "Please enter a valid domain (e.g., example.com)" });
+
+    if (!urlPattern.test(normalizedDomain)) {
+      setErrors({
+        domain: "Please enter a valid domain (e.g., example.com)",
+      });
       return;
     }
 
-    const fullUrl = domain.startsWith("http") ? domain : `https://${domain}`;
+    const fullUrl = normalizedDomain.startsWith("http")
+      ? normalizedDomain
+      : `https://${normalizedDomain}`;
+
+    setErrors({});
     setStep(2);
     startScraping(fullUrl);
   };
@@ -121,7 +133,6 @@ const Onboarding = ({ step, setStep }) => {
       <div className="h-[calc(100dvh-100px)] flex items-center justify-center px-6  rounded-t-full">
         <div className="w-2xl max-w-fit rounded backdrop-blur-xl py-12 px-8 sm:px-12 text-center">
           <h2 className="text-3xl flex items-center gap-2 text-left font-semibold text-[#3F3F3F] mb-2.5 opacity-0 animate-[fadeIn_0.8s_ease-out_0.2s_forwards]">
-      
             Enter Your Domain
           </h2>
           <p className="text-[#3F3F3F] text-lg mb-2 text-left opacity-0 animate-[fadeIn_0.8s_ease-out_0.4s_forwards]">
@@ -190,7 +201,9 @@ const Onboarding = ({ step, setStep }) => {
                     className="flex items-center justify-center gap-2"
                   >
                     <LucideLoader className="w-5 h-5 text-(--dark-blue)/55 animate-spin" />
-                    <span className="text-sm text-(--dark-gray)/70 text-nowrap">{msg}</span>
+                    <span className="text-sm text-(--dark-gray)/70 text-nowrap">
+                      {msg}
+                    </span>
                   </div>
                 ))
               : ["Connecting to server...", "Starting analysis..."].map(
