@@ -22,7 +22,7 @@ const SECTION_CONFIG = {
             key={i}
             className="group p-3 border border-(--border-light-gray) bg-white rounded-lg transition-all"
           >
-            <h4 className="font-semibold text-[#051d53] mb-1 group-hover:text-[#1920BA] transition-colors text-sm">
+            <h4 className="font-semibold text-(--dark-gray) mb-1 group-hover:text-[#1920BA] transition-colors text-sm">
               {feature.name}
             </h4>
             <p className="text-[#3f3f3f] text-xs leading-snug">
@@ -40,7 +40,7 @@ const SECTION_CONFIG = {
     render: (pricing) => (
       <>
         {pricing.overview && (
-          <p className="text-[#3f3f3f] mb-4 leading-snug text-sm">
+          <p className="text-[#3f3f3f] mb-4 leading-snug text-xs">
             {pricing.overview}
           </p>
         )}
@@ -116,6 +116,11 @@ const SECTION_CONFIG = {
       </div>
     ),
   },
+  faq: {
+    title: "FAQ",
+    icon: Box,
+    layout: "list",
+  },
 };
 
 // Small placeholder component for empty or missing values
@@ -149,7 +154,7 @@ const renderValue = (val) => {
                     <span className="font-semibold text-[#3f3f3f] mr-2">
                       {formatTitle(k)}:
                     </span>
-                    <span className="text-[#051d53]">{renderValue(v)}</span>
+                    <span className="text-xs text-(--dark-gray) font-light">{renderValue(v)}</span>
                   </div>
                 ))}
               </div>
@@ -170,7 +175,7 @@ const renderValue = (val) => {
             <div className="w-32 md:w-44 text-sm font-semibold text-[#3f3f3f]">
               {formatTitle(k)}
             </div>
-            <div className="text-[#051d53]">{renderValue(v)}</div>
+            <div className="text-xs text-(--dark-gray) font-light">{renderValue(v)}</div>
           </div>
         ))}
       </div>
@@ -230,10 +235,10 @@ const renderDynamicSection = (key, value, overrideConfig = {}) => {
                     key={k}
                     className="px-3 py-2 bg-white border border-(--border-light-gray) rounded-lg min-w-40 flex-1"
                   >
-                    <div className="text-xs text-[#6b7280] font-semibold">
+                    <div className="text-sm text-(--dark-gray) font-semibold">
                       {formatTitle(k)}
                     </div>
-                    <div className="text-sm text-[#051d53] mt-0.5">
+                    <div className="text-xs text-(--dark-gray) mt-0.5">
                       {renderValue(v)}
                     </div>
                   </div>
@@ -250,14 +255,14 @@ const renderDynamicSection = (key, value, overrideConfig = {}) => {
                   <h3 className="text-sm font-semibold text-[#3f3f3f] mb-1">
                     {formatTitle(subKey)}
                   </h3>
-                  <div className="text-[#051d53]">{renderValue(subValue)}</div>
+                  <div className="text-(--dark-gray) text-xs text-justify">{renderValue(subValue)}</div>
                 </div>
               ))}
             </div>
           );
         })()
       ) : (
-        <div className="text-[#3f3f3f] leading-relaxed">
+        <div className="text-[#3f3f3f] leading-relaxed text-xs">
           {renderValue(value)}
         </div>
       )}
@@ -370,11 +375,11 @@ export default function VendorSummary({ setStep }) {
   return (
     <>
       {/* Hero Header Section */}
-      <div className="max-w-6xl mx-auto mt-4">
+      <div className="max-w-[1200px] mx-auto mt-4">
         <div className="flex justify-between items-start gap-4 mb-3">
           <div className="flex-1">
             <h1 className="flex items-center gap-2 mb-2 text-2xl text-[#051d53] font-semibold">
-              <Box className="w-6 h-6 text-[#BE7AEF]" />
+              <Box className="w-6 h-6 text-(--dark-gray)" />
               {vendor.product_name || vendor.company_name || "Product"}
             </h1>
             {vendor.description && (
@@ -387,9 +392,9 @@ export default function VendorSummary({ setStep }) {
             {setStep && (
               <button
                 onClick={() => setStep(3)}
-                className="flex items-center gap-1.5 px-4 py-2 border border-white/20 bg-transparent cursor-pointer hover:bg-gray-100/65 rounded-lg transition text-sm"
+                className="flex items-center border-dashed gap-1.5 px-4 py-2 border border-[#3F3F3F]/15 bg-transparent cursor-pointer hover:bg-gray-100/65 rounded-lg transition text-sm"
               >
-                <Pencil className="w-4 h-4 text-[#BE7AEF]" /> Edit
+                <Pencil className="w-4 h-4 text-[#0066f0]" /> Edit
               </button>
             )}
             <button className="cta btn-blue font-medium text-sm px-4 py-2">Submit</button>
@@ -397,25 +402,25 @@ export default function VendorSummary({ setStep }) {
         </div>
 
         {/* Dynamic Sections */}
-        <div className="my-4 h-[calc(100dvh-160px)] overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div className="my-4 h-[calc(100dvh-235px)] overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {/* Top cards: Product & Company name (two-column) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
             <div>
               <div className="p-3 bg-white border border-(--border-light-gray) rounded-lg">
-                <div className="text-xs text-[#6b7280] font-semibold">
+                <div className="text-sm text-(--dark-gray) font-semibold">
                   Product Name
                 </div>
-                <div className="text-sm text-[#051d53] mt-0.5">
+                <div className="text-xs text-(--dark-gray) mt-0.5">
                   {vendor.product_name || <Placeholder />}
                 </div>
               </div>
             </div>
             <div>
               <div className="p-3 bg-white border border-(--border-light-gray) rounded-lg">
-                <div className="text-xs text-[#6b7280] font-semibold">
+                <div className="text-sm text-(--dark-gray) font-semibold">
                   Company Name
                 </div>
-                <div className="text-sm text-[#051d53] mt-0.5">
+                <div className="text-xs text-(--dark-gray) mt-0.5">
                   {vendor.company_name || <Placeholder />}
                 </div>
               </div>
@@ -426,10 +431,10 @@ export default function VendorSummary({ setStep }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
             <div>
               <div className="p-3 bg-white border border-(--border-light-gray) rounded-lg">
-                <div className="text-xs text-[#6b7280] font-semibold">
+                <div className="text-sm text-(--dark-gray) font-semibold">
                   Website
                 </div>
-                <div className="text-sm text-[#051d53] mt-0.5">
+                <div className="text-xs text-(--dark-gray) mt-0.5">
                   {vendor.company_website || vendor.website || vendor.weburl ? (
                     <a
                       href={
@@ -453,10 +458,10 @@ export default function VendorSummary({ setStep }) {
             </div>
             <div>
               <div className="p-3 bg-white border border-(--border-light-gray) rounded-lg">
-                <div className="text-xs text-[#6b7280] font-semibold">
+                <div className="text-sm text-(--dark-gray) font-semibold">
                   HQ Location
                 </div>
-                <div className="text-sm text-[#051d53] mt-0.5">
+                <div className="text-xs text-(--dark-gray) mt-0.5">
                   {vendor.hq_location || <Placeholder />}
                 </div>
               </div>
@@ -474,18 +479,18 @@ export default function VendorSummary({ setStep }) {
           {/* Parent / Sub category row (two columns) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-3">
             <div className="p-3 bg-white border border-(--border-light-gray) rounded-lg">
-              <div className="text-xs text-[#6b7280] font-semibold">
+              <div className="text-sm text-(--dark-gray) font-semibold">
                 Parent Category
               </div>
-              <div className="text-sm text-[#051d53] mt-0.5">
+              <div className="text-xs text-(--dark-gray) mt-0.5">
                 {vendor.parent_category || <Placeholder />}
               </div>
             </div>
             <div className="p-3 bg-white border border-(--border-light-gray) rounded-lg">
-              <div className="text-xs text-[#6b7280] font-semibold">
+              <div className="text-sm text-(--dark-gray) font-semibold">
                 Sub Category
               </div>
-              <div className="text-sm text-[#051d53] mt-0.5">
+              <div className="text-xs text-(--dark-gray) mt-0.5">
                 {vendor.sub_category || <Placeholder />}
               </div>
             </div>

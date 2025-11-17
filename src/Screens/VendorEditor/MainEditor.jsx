@@ -29,7 +29,7 @@ export default function MainEditor({
         ) : (
           vendors.map((vendor, vendorIndex) => (
             <React.Fragment key={vendorIndex}>
-              <div className="h-[calc(100dvh-260px)] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              <div className="h-[calc(100dvh-330px)] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                 {Object.entries(FIELD_GROUPS).map(
                   ([sectionKey, { title: sectionTitle, fields }]) => {
                     const sectionFields = fields.filter((f) =>
@@ -85,7 +85,7 @@ export default function MainEditor({
                                   data-field-id={field}
                                   className="flex flex-col gap-1.5"
                                 >
-                                  <label className="text-[13px] text-(--dark-blue)">
+                                  <label className="text-[14px] text-(--dark-gray) font-semibold">
                                     {prettifyKey(field)}
                                   </label>
                                   <FieldRenderer
@@ -105,7 +105,7 @@ export default function MainEditor({
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {/* Strengths */}
                                 <div className="flex flex-col gap-2">
-                                  <label className="block text-[13px] text-(--dark-blue) mb-2">
+                                  <label className="block text-[14px] text-(--dark-gray) font-semibold mb-2">
                                     Strengths
                                   </label>
                                   <div className="flex flex-col gap-2">
@@ -196,7 +196,7 @@ export default function MainEditor({
 
                                 {/* Weaknesses */}
                                 <div className="flex flex-col gap-2">
-                                  <label className="block text-[13px] text-(--dark-blue) mb-2">Weaknesses</label>
+                                  <label className="block text-[14px] text-(--dark-gray) font-semibold mb-2">Weaknesses</label>
                                   <div className="flex flex-col gap-2">
                                     <button
                                       onClick={() => {
@@ -276,7 +276,7 @@ export default function MainEditor({
 
                               {/* Rating */}
                               <div>
-                                <label className="block text-[13px] text-(--dark-blue) mb-2">Overall Rating</label>
+                                <label className="block text-[14px] text-(--dark-gray) font-semibold mb-2">Overall Rating</label>
                                 <input
                                   type="number"
                                   min="0"
@@ -297,7 +297,7 @@ export default function MainEditor({
 
                               {/* Review Sources */}
                               <div className="flex flex-col gap-2">
-                                <label className="block text-[13px] text-(--dark-blue) mb-2">Review Sources</label>
+                                <label className="block text-[14px] text-(--dark-gray) font-semibold mb-2">Review Sources</label>
                                 <div className="flex flex-col gap-2">
                                   <button
                                     onClick={() => {
@@ -345,7 +345,7 @@ export default function MainEditor({
                                 .filter((f) => !(vendor[f] && typeof vendor[f] === "object" && Array.isArray(vendor[f].pricing_plans)))
                                 .map((field) => (
                                   <div key={field} data-field-id={field}>
-                                    <label className="block text-[13px] text-(--dark-blue) mb-2">{prettifyKey(field)}</label>
+                                    <label className="block text-[14px] text-(--dark-gray) font-semibold mb-2">{prettifyKey(field)}</label>
                                     <FieldRenderer field={field} value={vendor[field]} path={[field]} onChange={(val2) => updateField(vendorIndex, [field], val2)} />
                                   </div>
                                 ))}
@@ -357,12 +357,12 @@ export default function MainEditor({
                                   const plans = val.pricing_plans;
                                   return (
                                     <div key={field}>
-                                      <label className="block text-[13px] text-(--dark-blue) mb-2">{prettifyKey(field)}</label>
+                                      <label className="block text-[14px] text-(--dark-gray) font-semibold mb-2">{prettifyKey(field)}</label>
                                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {plans.map((plan, pIdx) => (
                                           <div key={pIdx} data-field-id={[field, "pricing_plans", pIdx].join("|")} className="p-4 rounded-md border-2 border-(--border-light-gray) bg-white">
                                             <div className="flex justify-between items-start mb-3">
-                                              <strong className="text-sm">{plan.plan || plan.name || `Plan ${pIdx + 1}`}</strong>
+                                              <strong className="text-[16px]">{plan.plan || plan.name || `Plan ${pIdx + 1}`}</strong>
                                               <button onClick={() => updateField(vendorIndex, [field, "pricing_plans"], plans.filter((_, i) => i !== pIdx))} title="Remove plan" className="cursor-pointer">
                                                 <X className="min-w-[18px] text-(--ruby-red)" />
                                               </button>
@@ -371,7 +371,7 @@ export default function MainEditor({
                                             <div className="flex flex-col gap-2">
                                               {Object.entries(plan).map(([k, v]) => (
                                                 <div key={k} data-field-id={[field, "pricing_plans", pIdx, k].join("|")}>
-                                                  <label className="block text-[12px] text-(--dark-blue) mb-1">{prettifyKey(k)}</label>
+                                                  <label className="block text-sm text-(--dark-gray) font-semibold mb-1">{prettifyKey(k)}</label>
                                                   <FieldRenderer field={k} value={v} path={[field, "pricing_plans", pIdx, k]} onChange={(childVal) => updateField(vendorIndex, [field, "pricing_plans", pIdx, k], childVal)} />
                                                 </div>
                                               ))}
@@ -396,7 +396,7 @@ export default function MainEditor({
                             <div className="flex flex-col gap-4">
                               {sectionFields.map((field) => (
                                 <div key={field} data-field-id={field}>
-                                  <label className={`block text-[13px] mb-1.5 ${field === "company_info" || field === "social_links" || field === "social_profiles" ? "text-(--dark-blue)" : "text-(--dark-gray)"}`}>
+                                  <label className={`block text-sm font-semibold mb-1.5 ${field === "company_info" || field === "social_links" || field === "social_profiles" ? "text-(--dark-gray)" : "text-(--dark-gray)"}`}>
                                     {prettifyKey(field)}
                                   </label>
                                   <FieldRenderer field={field} value={vendor[field]} path={[field]} onChange={(val2) => updateField(vendorIndex, [field], val2)} />
@@ -408,7 +408,7 @@ export default function MainEditor({
                             <div className="flex flex-col gap-4">
                               {sectionFields.map((field) => (
                                 <div key={field} data-field-id={field}>
-                                  <label className="block text-[13px] text-(--dark-blue) mb-1.5">{prettifyKey(field)}</label>
+                                  <label className="block text-[16px] text-(--dark-gray) font-semibold mb-1.5">{prettifyKey(field)}</label>
                                   <FieldRenderer field={field} value={vendor[field]} path={[field]} onChange={(val2) => updateField(vendorIndex, [field], val2)} />
                                 </div>
                               ))}
