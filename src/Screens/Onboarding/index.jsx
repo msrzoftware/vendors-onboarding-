@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { Globe, ArrowRight, Sparkles, LucideLoader } from "lucide-react";
+import {
+  Globe,
+  ArrowRight,
+  Sparkles,
+  LucideLoader,
+  ArrowLeft,
+} from "lucide-react";
 import VendorSummary from "../VendorSummary/index.jsx";
 import VendorEditor from "../VendorEditor/index.jsx";
 import { useScraper } from "../../hooks/useScraper";
@@ -49,7 +55,7 @@ const Onboarding = ({ step, setStep }) => {
       setErrors({ general: apiError });
     }
   }, [apiError]);
-  
+
   const handleDomainSubmit = (e) => {
     e.preventDefault();
 
@@ -117,7 +123,7 @@ const Onboarding = ({ step, setStep }) => {
           {/* CTA Button */}
           <button
             onClick={() => setStep(1)}
-            className="btn-blue mt-3 opacity-0 animate-[fadeIn_0.8s_ease-out_1.1s_forwards] hover:shadow-md transition-all duration-300"
+            className="btn-blue mt-3 gap-1.5 opacity-0 animate-[fadeIn_0.8s_ease-out_1.1s_forwards] hover:shadow-md transition-all duration-300"
           >
             <span>Start Onboarding</span>
             <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -131,11 +137,22 @@ const Onboarding = ({ step, setStep }) => {
   if (step === 1) {
     return (
       <div className="h-[calc(100dvh-100px)] flex items-center justify-center px-6  rounded-t-full">
-        <div className="w-2xl max-w-fit rounded backdrop-blur-xl py-12 px-8 sm:px-12 text-center">
-          <h2 className="text-3xl flex items-center gap-2 text-left font-semibold text-[#3F3F3F] mb-2.5 opacity-0 animate-[fadeIn_0.8s_ease-out_0.2s_forwards]">
+        <div className="w-2xl max-w-fit rounded backdrop-blur-xl py-12 px-8 sm:px-12">
+          {/* Go Back */}
+          <button
+            className="group text-sm mr-auto inline-flex items-center gap-1 text-(--dark-blue) hover:font-medium hover:underline cursor-pointer transition-colors opacity-0 animate-[fadeIn_0.9s_ease-out_0.2s_forwards] mb-1.5"
+            onClick={() => {
+              setStep(0);
+              localStorage.setItem("onboarding_step", "0");
+            }}
+          >
+            <ArrowLeft className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
+            Go Back
+          </button>
+          <h2 className="text-3xl flex items-center gap-2 text-left font-semibold text-[#3F3F3F]/80 mb-2.5 opacity-0 animate-[fadeIn_0.8s_ease-out_0.2s_forwards]">
             Enter Your Domain
           </h2>
-          <p className="text-[#3F3F3F] text-lg mb-2 text-left opacity-0 animate-[fadeIn_0.8s_ease-out_0.4s_forwards]">
+          <p className="text-[#3F3F3F] text-sm text-left opacity-0 animate-[fadeIn_0.8s_ease-out_0.4s_forwards]">
             We'll automatically retrieve your company information
           </p>
 
@@ -149,8 +166,8 @@ const Onboarding = ({ step, setStep }) => {
                   setErrors({});
                 }}
                 placeholder="example.com"
-                className={`w-full py-4 border-b-2 bg-transparent text-lg transition-colors
-                  focus:outline-none focus:ring-0 focus:border-indigo-500 placeholder-[#3F3F3F]/35
+                className={`w-full py-3 border-b-2 bg-transparent text-md transition-colors
+                  outline-none focus:border-(--dark-sapphire) focus:outline-none placeholder-[#3F3F3F]/35
                   ${
                     errors.domain
                       ? "border-red-500 text-red-700 placeholder-red-400"
