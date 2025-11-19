@@ -29,7 +29,7 @@ export default function MainEditor({
         ) : (
           vendors.map((vendor, vendorIndex) => (
             <React.Fragment key={vendorIndex}>
-              <div className="h-[calc(100dvh-330px)] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              <div className="h-[calc(100dvh-285px)] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                 {Object.entries(FIELD_GROUPS).map(
                   ([sectionKey, { title: sectionTitle, fields }]) => {
                     const sectionFields = fields.filter((f) =>
