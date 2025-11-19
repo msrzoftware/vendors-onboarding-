@@ -454,7 +454,7 @@ const VendorEditor = ({ setStep }) => {
     vendors[0]?.description || vendors[0]?.product_description_short || "";
 
   return (
-    <div className="h-screen backdrop-blur-sm overflow-auto pb-10">
+    <div className="min-h-screen backdrop-blur-sm overflow-auto mt-6 pb-10">
       <style>{`
         @keyframes highlightField {
           0%, 100% {
@@ -518,7 +518,7 @@ const VendorEditor = ({ setStep }) => {
       {/* Empty fields panel is now rendered inside MainEditor to preserve horizontal layout */}
 
       {showLeaveConfirm && (
-        <div className="fixed h-[calc(100dvh-102px)] inset-0 z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm px-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm px-4">
           <div className="w-full max-w-sm rounded-xl bg-white p-6 text-center shadow-xl space-y-4">
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-50">
               <AlertCircle className="h-8 w-8 text-red-500" />
@@ -538,18 +538,16 @@ const VendorEditor = ({ setStep }) => {
                   ["currentJobId", "jobStartTime", "jobUrl"].forEach((key) =>
                     localStorage.removeItem(key)
                   );
-                  localStorage.clear();
-                  sessionStorage.removeItem("vendoreditor_auto_highlight_done");
                   setShowLeaveConfirm(false);
                   setStep(0);
                 }}
-                className="btn-blue flex-1 text-nowrap"
+                className="btn-blue flex-1"
               >
                 Yes, start over
               </button>
               <button
                 onClick={() => setShowLeaveConfirm(false)}
-                className="flex-1 rounded-lg border border-(--border-light-gray) px-4 py-2 text-(--dark-gray) text-nowrap transition hover:bg-gray-50"
+                className="flex-1 rounded-lg border border-(--border-light-gray) px-4 py-2 text-(--dark-blue) text-nowrap transition hover:bg-gray-50"
               >
                 No, keep editing
               </button>
