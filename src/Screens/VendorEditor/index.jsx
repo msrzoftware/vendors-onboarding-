@@ -535,6 +535,7 @@ const VendorEditor = ({ setStep }) => {
               <button
                 onClick={() => {
                   localStorage.removeItem(LS_KEY);
+                  sessionStorage.clear();
                   ["currentJobId", "jobStartTime", "jobUrl"].forEach((key) =>
                     localStorage.removeItem(key)
                   );
