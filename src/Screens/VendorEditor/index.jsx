@@ -541,7 +541,7 @@ const VendorEditor = ({ setStep }) => {
                   setShowLeaveConfirm(false);
                   setStep(0);
                 }}
-                className="btn-blue flex-1"
+                className="btn-blue flex-1 text-nowrap"
               >
                 Yes, start over
               </button>
