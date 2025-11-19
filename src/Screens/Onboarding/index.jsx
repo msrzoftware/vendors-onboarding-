@@ -39,14 +39,24 @@ const Onboarding = ({ step, setStep }) => {
         console.error("Failed to parse stored data:", err);
       }
     } else {
-      resumeJob();
+      // Only attempt to resume a job when we are not on the welcome/domain steps.
+      // This avoids automatically restarting jobs when the user intentionally
+      // navigates back to the start (step 0).
+      if (step !== 0 && step !== 1) {
+        resumeJob();
+      }
     }
   }, [resumeJob, setStep, step]);
 
   useEffect(() => {
     if (result) {
       setCompanyData(result);
-      if (typeof step === "number" && step < 3) setStep(3);
+      // Only auto-advance to the editor if the user is not intentionally
+      // on the welcome/domain steps (i.e. step 0 or 1). This prevents a
+      // stale `result` from forcing navigation back to step 3 after
+      // the user clicked "Start Over".
+      if (typeof step === "number" && step < 3 && step !== 0 && step !== 1)
+        setStep(3);
     }
   }, [result, setStep, step]);
 
@@ -60,28 +70,46 @@ const Onboarding = ({ step, setStep }) => {
     e.preventDefault();
 
     // Auto-convert to lowercase
-    const normalizedDomain = domain.trim().toLowerCase();
+    const raw = domain.trim();
 
-    // More accurate and simple domain regex
-    const urlPattern = /^[a-z0-9.-]+\.[a-z]{2,}$/;
-
-    if (!normalizedDomain) {
+    if (!raw) {
       setErrors({ domain: "Please enter a domain name" });
       return;
     }
 
-    if (!urlPattern.test(normalizedDomain)) {
-      setErrors({
-        domain: "Please enter a valid domain (e.g., example.com)",
-      });
+    // Try to parse input as a URL; if missing protocol, assume https://
+    let parsedUrl = null;
+    try {
+      parsedUrl = new URL(raw);
+    } catch {
+      try {
+        parsedUrl = new URL("https://" + raw);
+      } catch {
+        parsedUrl = null;
+      }
+    }
+
+    if (!parsedUrl) {
+      setErrors({ domain: "Please enter a valid domain or URL (e.g., example.com or https://example.com)" });
       return;
     }
 
-    const fullUrl = normalizedDomain.startsWith("http")
-      ? normalizedDomain
-      : `https://${normalizedDomain}`;
+    const hostname = (parsedUrl.hostname || "").toLowerCase();
+    // Simple hostname validation (allows subdomains and TLDs of length >=2)
+    const hostPattern = /^[a-z0-9.-]+\.[a-z]{2,}$/i;
+    if (!hostPattern.test(hostname)) {
+      setErrors({ domain: "Please enter a valid domain (e.g., example.com)" });
+      return;
+    }
+
+    // Ensure we pass a full URL to the scraper (preserve any path if provided)
+    const fullUrl = parsedUrl.href.startsWith("http")
+      ? parsedUrl.href
+      : `https://${parsedUrl.href}`;
 
     setErrors({});
+    // show normalized hostname in the loading UI
+    setDomain(hostname);
     setStep(2);
     startScraping(fullUrl);
   };
