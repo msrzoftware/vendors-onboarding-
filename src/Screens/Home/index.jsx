@@ -29,7 +29,7 @@ const Home = () => {
   return (
     <div className="flex flex-col h-screen">
       {/* Header: rounded tab navigation (DailyUI-style) */}
-      <div className="w-full flex justify-center items-center py-4 px-2">
+      {/* <div className="w-full flex justify-center items-center py-4 px-2">
         <div className="w-full flex rounded-full shadow-md bg-white gap-0.5 overflow-hidden">
           {[
             {
@@ -131,7 +131,7 @@ const Home = () => {
             );
           })}
         </div>
-      </div>
+      </div> */}
 
       {/* Bottom Onboarding Section */}
       <div className="flex-1 w-full z-50 bg-white overflow-hidden">
