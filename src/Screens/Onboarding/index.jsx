@@ -100,7 +100,7 @@ const Onboarding = ({ step, setStep }) => {
 
           <div>
             {/* Heading */}
-            <h1 className="text-3xl lg:text-5xl font-semibold leading-tight text-(--dark-blue)/85 opacity-0 animate-[fadeIn_0.8s_ease-out_0.7s_forwards]">
+            <h1 className="text-3xl lg:text-5xl font-medium leading-tight text-(--dark-blue) opacity-0 animate-[fadeIn_0.8s_ease-out_0.7s_forwards]">
               Empower Your Growth as Our{" "}
               <span
                 className="bg-clip-text text-transparent"
@@ -114,7 +114,7 @@ const Onboarding = ({ step, setStep }) => {
             </h1>
 
             {/* Subtitle */}
-            <p className="mt-4 text-lg lg:text-lg text-[#696871] font-normal leading-relaxed opacity-0 animate-[fadeIn_0.8s_ease-out_0.9s_forwards]">
+            <p className="mt-4 text-lg lg:text-md text-[#696871] font-normal leading-relaxed opacity-0 animate-[fadeIn_0.8s_ease-out_0.9s_forwards]">
               Join a community of trusted vendors delivering innovative
               solutions.
             </p>
