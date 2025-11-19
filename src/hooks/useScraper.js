@@ -13,6 +13,9 @@ export const useScraper = () => {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const eventSourceRef = useRef(null);
+  const retryCountRef = useRef(0);
+  const MAX_RETRIES = 3;
+  const RETRY_DELAY_MS = 1000;
 
   const clearJobFromStorage = useCallback(() => {
     localStorage.removeItem(JOB_ID_KEY);
@@ -36,6 +39,7 @@ export const useScraper = () => {
   const connectToStream = useCallback(
     (jobId) => {
       closeEventSource();
+      retryCountRef.current = 0;
       setIsLoading(true);
       setError(null);
 
@@ -57,21 +61,24 @@ export const useScraper = () => {
               setProgress((prev) => [...prev, data.message].slice(-2));
               setResult(data.data);
               setIsLoading(false);
-              localStorage.setItem(
-                STORAGE_KEY,
-                JSON.stringify({
-                  success: true,
-                  data: data.data,
-                  error: null,
-                })
-              );
-              clearJobFromStorage();
-              closeEventSource();
+                localStorage.setItem(
+                  STORAGE_KEY,
+                  JSON.stringify({
+                    success: true,
+                    data: data.data,
+                    error: null,
+                  })
+                );
+                retryCountRef.current = 0;
+                clearJobFromStorage();
+                closeEventSource();
               break;
 
             case "error":
               setError(data.error || data.message);
               setIsLoading(false);
+              // treat server-declared job error as terminal
+              retryCountRef.current = 0;
               clearJobFromStorage();
               closeEventSource();
               break;
@@ -85,9 +92,27 @@ export const useScraper = () => {
       };
 
       eventSource.onerror = (err) => {
-        console.error("SSE connection error:", err);
+        console.warn("SSE connection error for job", jobId, err);
+        // Don't immediately clear storage on transient SSE errors.
+        // Try reconnecting a few times, then give up and clear storage.
+        retryCountRef.current = (retryCountRef.current || 0) + 1;
+        if (retryCountRef.current <= MAX_RETRIES) {
+          const delay = RETRY_DELAY_MS * retryCountRef.current;
+          console.debug(
+            `Retrying SSE connect for job ${jobId} (attempt ${retryCountRef.current}) in ${delay}ms`
+          );
+          closeEventSource();
+          setTimeout(() => {
+            // try to re-open stream
+            connectToStream(jobId);
+          }, delay);
+          return;
+        }
+
+        // exhausted retries -> treat as terminal error
         setError("Connection to server lost. Please try again.");
         setIsLoading(false);
+        retryCountRef.current = 0;
         clearJobFromStorage();
         closeEventSource();
       };

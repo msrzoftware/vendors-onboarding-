@@ -534,12 +534,31 @@ const VendorEditor = ({ setStep }) => {
             <div className="flex flex-col gap-3 sm:flex-row">
               <button
                 onClick={() => {
-                  localStorage.removeItem(LS_KEY);
-                  sessionStorage.clear();
-                  ["currentJobId", "jobStartTime", "jobUrl"].forEach((key) =>
-                    localStorage.removeItem(key)
-                  );
+                  // Close the dialog first
                   setShowLeaveConfirm(false);
+
+                  // Remove vendor data and any active job info so Onboarding
+                  // doesn't detect persisted company data and force step 3.
+                  try {
+                    localStorage.removeItem(LS_KEY);
+                    localStorage.removeItem("currentJobId");
+                    localStorage.removeItem("jobStartTime");
+                    localStorage.removeItem("jobUrl");
+                    // Ensure onboarding_step is set to 0 so Home/Onboarding
+                    // remain on the landing step during the transition.
+                    localStorage.setItem("onboarding_step", "0");
+                  } catch {
+                    // ignore storage errors
+                  }
+
+                  // Clear session storage as requested
+                  try {
+                    sessionStorage.clear();
+                  } catch {
+                    // ignore
+                  }
+
+                  // Finally navigate to the first page (Home step 0)
                   setStep(0);
                 }}
                 className="btn-blue flex-1 text-nowrap"
